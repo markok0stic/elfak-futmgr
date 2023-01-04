@@ -1,0 +1,32 @@
+@using elfak_futmgr.Helpers
+
+@{
+    string? authorized = JwtTokenHelper.GetRoleIfAuthorized(Context);
+    authorized = "asd";
+}
+
+
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <title>@ViewData["Title"]</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        @Html.AntiForgeryToken()
+
+        @if (authorized != null)
+        {
+            // authorised user layout
+            @RenderBody()
+        }
+        else
+        {
+            // non-authorised user layout
+            @RenderBody()
+        }
+            
+        @*  Script Includes  *@
+    </body>
+</html>
