@@ -2,29 +2,18 @@
 @{
     Layout = "../Shared/_Layout.cshtml";
 }
-<div class="mc_login-wrapper">
-    <div class="mc_login-right">
-        <div class="mc_login-container">
-            <div class="title-wrapper">
-                <h5 class="mc_sub-title">Login to Continue</h5>
-            </div>
-            <form class="mc_login-form mc_credentials-wrapper mc_login-form_JS" id="jj_login--form">
-                <input class="jj_login-input" type="hidden" value="@Url.Action("Login", "Auth")" redirect="@Url.Action("Index","Home")" name="url"/>
-                @Html.AntiForgeryToken()
-                <div class="mc_credentials-inputs mc_credentials-inputs_JS">
-                    <input class="jj_login-input mc_input mc_mail mc_input_JS mc_input-separator" placeholder=" " required="required" type="text" id="loginUsername" name="username"/>
-                    <label class="mc_label mc_label_JS" for="loginUsername">Username</label>
-                </div>
-                <div class="mc_credentials-inputs mc_credentials-inputs_JS">
-                    <input class="jj_login-input mc_input mc_password mc_input_JS mc_input-password_JS" placeholder=" " required="required" type="password" id="loginPass" name="password"/>
-                    <label class="mc_label mc_label-password mc_label_JS" for="loginPass">Password</label>
-                </div>
 
-                <div class="mc_credentials-button mc_credentials-button_JS">
-                    <button type="submit" class="js_login btn btn-gradient mc_button jj_login-button_JS" data-text="Logging you in...">Login</button>
-                    <div class="jj_login-error"></div>
-                </div>
-            </form>
-        </div>
+<form class="fm-center">
+    <h5 class="fm-subtitle">Login to Continue</h5>
+    <input type="hidden" value="@Url.Action("Login", "Auth")" redirect="@Url.Action("Index", "Home")" name="url"/>
+    @Html.AntiForgeryToken()
+    <div class="fm-cred">
+        <input class="" placeholder=" " required="required" type="text" id="loginUsername" name="username"/>
+        <label for="loginUsername">Username</label>
     </div>
-</div>
+    <div class="fm-cred">
+        <input class="" placeholder=" " required="required" type="text" id="loginPassword" name="password"/>
+        <label for="loginPassword">Password</label>
+    </div>
+    <button type="submit" class="fm-login-btn" data-text="Logging you in...">Login</button>
+</form>

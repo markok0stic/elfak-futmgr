@@ -15,13 +15,5 @@ public class AuthorizedUser
         Username =  string.Empty;
         PasswordHash = PasswordSalt = null;
         Role = string.Empty;
-
-    }
-    public AuthorizedUser(IConfiguration configuration)
-    {
-        Id = 0;
-        Username =  string.Empty;
-        PasswordHash = PasswordSalt = null;
-        Role = configuration.GetValue<string[]>("Roles")[(int)AuthRole.Unauthorized];
     }
 }

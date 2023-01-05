@@ -30,11 +30,11 @@ public class AuthService : IAuthService
             Username = userDto.Username,
             PasswordHash = passwordHash,
             PasswordSalt = passwordSalt,
-            Role = _configuration.GetValue<string[]>("Roles")[(int)AuthRole.Authorized]
+            Role = _configuration.GetSection("Roles").Get<string[]>()[(int)AuthRole.Authorized]
         };
         if (superAdmin)
         {
-            authUser.Role = _configuration.GetValue<string[]>("Roles")[(int)AuthRole.SuperAdmin];
+            authUser.Role = _configuration.GetSection("Roles").Get<string[]>()[(int)AuthRole.SuperAdmin];
         }
         await _authDbService.RegisterUser(authUser);
         return authUser;

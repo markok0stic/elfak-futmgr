@@ -71,4 +71,20 @@ public class AuthController : Controller
         await Task.CompletedTask;
         return result;
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Register([FromBody] UserDto userDto)
+    {
+        IActionResult result;
+        try
+        {
+            result = Ok(await _authService.Register(userDto));
+        }
+        catch (Exception e)
+        {
+            result = UnprocessableEntity(e);
+        }
+            
+        return result;
+    }
 }
