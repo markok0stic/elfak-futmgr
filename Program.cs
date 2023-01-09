@@ -4,12 +4,19 @@ using elfak_futmgr.Helpers;
 using elfak_futmgr.Services.Auth;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Neo4jClient;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<IAuthDbService, AuthDbService>();
+var graphClient = new BoltGraphClient(
+    new Uri(builder.Configuration.GetValue<string>("Neo4j:Uri")),
+    builder.Configuration.GetValue<string>("Neo4j:Username"),
+    builder.Configuration.GetValue<string>("Neo4j:Password"));
+graphClient.ConnectAsync();
+builder.Services.AddSingleton<IGraphClient>(graphClient);
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
