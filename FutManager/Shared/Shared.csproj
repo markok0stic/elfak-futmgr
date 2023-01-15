@@ -9,8 +9,10 @@
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
+    
     <ItemGroup>
-      <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
+        <PackageReference Include="Neo4jClient" Version="5.1.3" />
+        <PackageReference Include="StackExchange.Redis" Version="2.6.90" />
     </ItemGroup>
 
 </Project>

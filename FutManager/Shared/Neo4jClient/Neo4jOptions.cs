@@ -1,4 +1,4 @@
-namespace FutManager.Neo4jClient;
+namespace Shared.Neo4jClient;
 
 public sealed class Neo4JOptions
 {

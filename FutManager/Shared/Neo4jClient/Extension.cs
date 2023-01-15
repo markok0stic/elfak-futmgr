@@ -1,6 +1,8 @@
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Neo4jClient;
 
-namespace FutManager.Neo4jClient;
+namespace Shared.Neo4jClient;
 
 public static class Extension
 {
@@ -10,10 +12,8 @@ public static class Extension
         var options = new Neo4JOptions();
         section.Bind(options);
         services.Configure<Neo4JOptions>(section);
-        
         var graphClient = new BoltGraphClient(options.Uri, options.Username, options.Password);
         graphClient.ConnectAsync();
-
         services.AddSingleton<IGraphClient>(graphClient);
         return services;
     }
