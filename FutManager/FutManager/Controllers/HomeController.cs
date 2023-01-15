@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace elfak_futmgr.Controllers;
+namespace FutManager.Controllers;
 
 /*[CustomAuth(ClaimTypes.Role,"Authorized")]*/
 public class HomeController : Controller
