@@ -1,8 +1,4 @@
-@using elfak_futmgr.Helpers
-
 @{
-    string? authorized = JwtTokenHelper.GetRoleIfAuthorized(Context);
-    authorized = "asd";
 }
 
 
@@ -15,18 +11,7 @@
     </head>
     <body>
         @Html.AntiForgeryToken()
-
-        @if (authorized != null)
-        {
-            // authorised user layout
-            @RenderBody()
-        }
-        else
-        {
-            // non-authorised user layout
-            @RenderBody()
-        }
-            
-        @*  Script Includes  *@
+        @RenderBody()
+    @*  Script Includes  *@
     </body>
 </html>
