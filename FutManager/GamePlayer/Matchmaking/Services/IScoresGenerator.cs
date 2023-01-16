@@ -1,4 +1,4 @@
-using GamePlayer.Matchmaking.Models;
+using Shared.Models;
 
 namespace GamePlayer.Matchmaking.Services;
 

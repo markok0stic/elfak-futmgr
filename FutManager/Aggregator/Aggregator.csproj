@@ -4,14 +4,11 @@
         <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
+        <RootNamespace>WebApplication1</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Shared\Shared.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Matchmaking\Models" />
     </ItemGroup>
 
 </Project>
