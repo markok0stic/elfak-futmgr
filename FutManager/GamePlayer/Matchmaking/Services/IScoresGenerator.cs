@@ -4,7 +4,7 @@ namespace GamePlayer.Matchmaking.Services;
 
 internal interface IScoresGenerator
 {
-    IAsyncEnumerable<MatchResult> StartAsync();
-    Task StopAsync();
+    IAsyncEnumerable<MatchResult> StartAsync(int matchId);
+    Task StopAsync(int matchId);
     
 }

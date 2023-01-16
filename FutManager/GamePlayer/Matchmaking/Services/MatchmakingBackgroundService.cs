@@ -1,68 +1,80 @@
 using GamePlayer.Matchmaking.Requests;
+using Newtonsoft.Json;
 using Shared.Streaming;
+using System.Collections.Concurrent;
 
 namespace GamePlayer.Matchmaking.Services;
 
-internal sealed class MatchmakingBackgroundService: BackgroundService
+internal sealed class MatchmakingBackgroundService : BackgroundService
 {
     private readonly IScoresGenerator _scoresGenerator;
     private readonly MatchmakingRequestsChannel _matchmakingRequestsChannel;
     private readonly IStreamPublisher _streamPublisher;
     private readonly ILogger<MatchmakingBackgroundService> _logger;
+    private readonly ConcurrentDictionary<int, Task> _matchTasks;
+    private int _matchCounter;
 
-    private int _runningStatus;
-
-    public MatchmakingBackgroundService(IScoresGenerator scoresGenerator, 
-        MatchmakingRequestsChannel matchmakingRequestsChannel, IStreamPublisher streamPublisher, ILogger<MatchmakingBackgroundService> logger)
+    public MatchmakingBackgroundService(IScoresGenerator scoresGenerator,
+        MatchmakingRequestsChannel matchmakingRequestsChannel, IStreamPublisher streamPublisher,
+        ILogger<MatchmakingBackgroundService> logger)
     {
+        _matchCounter = 0;
         _scoresGenerator = scoresGenerator;
         _matchmakingRequestsChannel = matchmakingRequestsChannel;
         _streamPublisher = streamPublisher;
         _logger = logger;
+        _matchTasks = new ConcurrentDictionary<int, Task>();
     }
-    
+
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         _logger.LogInformation("Matchmaking background service has started.");
         await foreach (var request in _matchmakingRequestsChannel.Requests.Reader.ReadAllAsync(stoppingToken))
         {
-            _logger.LogInformation($"Matchmaking background service has received the request: '{request.GetType().Name}'.");
-            
+            _logger.LogInformation(
+                $"Matchmaking background service has received the request: '{request.GetType().Name}'.");
+
             var _ = request switch
             {
-                StartMatchmaking => StartGeneratorAsync(),
-                StopMatchmaking => StopGeneratorAsync(),
+                StartMatchmaking => StartMatchmakingAsync(),
+                StopMatchmaking => StopMatchmakingAsync(),
                 _ => Task.CompletedTask
             };
         }
-        
+
         _logger.LogInformation("Matchmaking background service has stopped.");
     }
-    
-    private async Task StartGeneratorAsync()
-    {
-        if (Interlocked.Exchange(ref _runningStatus, 1) == 1)
-        {
-            _logger.LogInformation("Scores generator is already running.");
-            return;
-        }
 
-        await foreach (var scores in _scoresGenerator.StartAsync())
-        {
-            _logger.LogInformation("Publishing the scores...");
-            await _streamPublisher.PublishAsync("scores", scores);
-        }
+    private async Task StartMatchmakingAsync()
+    {
+        int matchId = Interlocked.Increment(ref _matchCounter);
+        var matchTask = StartMatchAsync(matchId);
+        _matchTasks.TryAdd(matchId, matchTask);
     }
-    
-    private async Task StopGeneratorAsync()
+
+    private async Task StartMatchAsync(int matchId)
     {
-        if (Interlocked.Exchange(ref _runningStatus, 0) == 0)
+        await foreach (var scores in _scoresGenerator.StartAsync(matchId))
         {
-            _logger.LogInformation("Scores generator is not running.");
-            return;
+            _logger.LogInformation($"Publishing the scores for match {matchId}...");
+            await _streamPublisher.PublishAsync($"scores_{matchId}", scores);
         }
 
-        await _scoresGenerator.StopAsync();
+        _matchTasks.TryRemove(matchId, out _);
+    }
+
+    private async Task StopMatchmakingAsync()
+    {
+        if (_matchTasks.TryGetValue(_matchCounter, out var matchTask))
+        {
+            await _scoresGenerator.StopAsync(_matchCounter);
+            _matchTasks.TryRemove(_matchCounter, out _);
+            Interlocked.Decrement(ref _matchCounter);
+        }
+        else
+        {
+            _logger.LogInformation("No match found to stop.");
+        }
     }
 }

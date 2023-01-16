@@ -1,46 +1,38 @@
+using System.Collections.Concurrent;
 using GamePlayer.Matchmaking.Models;
-using Shared.Models;
 
 namespace GamePlayer.Matchmaking.Services;
 
 internal sealed class ScoresGenerator: IScoresGenerator
 {
-    private readonly ILogger<ScoresGenerator> _logger;
-    
-    private bool _isRunning;
-    private readonly Random _random = new();
-    private readonly List<MatchResult> _matchResults = new();
+    private readonly ConcurrentDictionary<int, bool> _matchRunningStatus;
+    private readonly ILogger<IScoresGenerator> _logger;
 
     public ScoresGenerator(ILogger<ScoresGenerator> logger)
     {
         _logger = logger;
+        _matchRunningStatus = new ConcurrentDictionary<int, bool>();
     }
-    
-    public async IAsyncEnumerable<MatchResult> StartAsync()
-    {
-        _isRunning = true;
-        while (_isRunning)
-        {
-            if (!_isRunning)
-            {
-                yield break;
-            }
 
-            var result =  new MatchResult()
+    public async IAsyncEnumerable<MatchResult> StartAsync(int matchId)
+    {
+        _matchRunningStatus[matchId] = true;
+        while (_matchRunningStatus.TryGetValue(matchId, out var isRunning) && isRunning)
+        {
+            var result = new MatchResult()
             {
                 Winner = "Benfica",
                 TimeStamp = DateTimeOffset.Now
             };
-            _logger.LogInformation("Match winner: {ResultWinner} Time:{ResultTimeStamp}", result.Winner,
-                result.TimeStamp);
+            _logger.LogInformation("Match winner: {ResultWinner} Time:{ResultTimeStamp}", result.Winner, result.TimeStamp);
             yield return result;
             await Task.Delay(1000);
         }
     }
 
-    public Task StopAsync()
+    public Task StopAsync(int matchId)
     {
-        _isRunning = false;
+        _matchRunningStatus[matchId] = false;
         return Task.CompletedTask;
     }
 }

@@ -1,4 +1,4 @@
-using Shared.Serialization;
+using Newtonsoft.Json;
 using Shared.Streaming;
 using StackExchange.Redis;
 
@@ -6,12 +6,10 @@ namespace Shared.Redis.Streaming;
 
 internal sealed class RedisStreamPublisher : IStreamPublisher
 {
-    private readonly ISerializer _serializer;
     private readonly ISubscriber _subscriber;
 
-    public RedisStreamPublisher(IConnectionMultiplexer connectionMultiplexer, ISerializer serializer)
+    public RedisStreamPublisher(IConnectionMultiplexer connectionMultiplexer)
     {
-        _serializer = serializer;
         _subscriber = connectionMultiplexer.GetSubscriber();
     }
     
@@ -20,7 +18,7 @@ internal sealed class RedisStreamPublisher : IStreamPublisher
         try
         {
             // TODO: this one is not working well
-            var payload = _serializer.Serialize(data);
+            var payload = JsonConvert.SerializeObject(data);
             return _subscriber.PublishAsync(topic, payload);
         }
         catch (Exception e)

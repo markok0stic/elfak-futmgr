@@ -1,9 +1,6 @@
-using Neo4jClient;
 using Shared.Neo4jClient;
 using Shared.Redis;
 using Shared.Redis.Streaming;
-using Shared.Serialization;
-using Shared.Streaming;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,8 +9,6 @@ builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
 builder.Services
     .AddHttpContextAccessor()
-    .AddSerialization()
-    .AddStreaming()
     .AddNeo4J(builder.Configuration)
     .AddRedis(builder.Configuration)
     .AddRedisStreaming();
