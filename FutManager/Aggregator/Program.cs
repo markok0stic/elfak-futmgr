@@ -1,6 +1,6 @@
+using Aggregator;
 using Shared.Redis;
 using Shared.Redis.Streaming;
-using WebApplication1;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services

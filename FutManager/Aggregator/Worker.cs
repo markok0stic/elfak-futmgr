@@ -1,7 +1,7 @@
 using Shared.Models;
 using Shared.Streaming;
 
-namespace WebApplication1;
+namespace Aggregator;
 
 internal sealed class Worker : BackgroundService
 {
