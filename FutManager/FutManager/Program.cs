@@ -1,3 +1,4 @@
+using FutManager.Services.RedisHub;
 using Shared.Neo4jClient;
 using Shared.Redis;
 using Shared.Redis.Streaming;
@@ -11,7 +12,9 @@ builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
     .AddRedis(builder.Configuration)
-    .AddRedisStreaming();
+    .AddRedisStreaming()
+    .AddSingleton<RedisHub>()
+    .AddSignalR();
 
 var app = builder.Build();
 
@@ -32,10 +35,12 @@ app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseEndpoints(endpoints => {
+app.UseEndpoints(endpoints =>
+{
     endpoints.MapControllerRoute(
         name: "default",
         pattern: "{controller=Home}/{action=Index}/");
+    endpoints.MapHub<RedisHub>("/redisHub");
 });
 app.MapControllers();
 app.Run();
