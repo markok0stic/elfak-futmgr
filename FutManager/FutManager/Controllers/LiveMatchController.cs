@@ -6,6 +6,7 @@ namespace FutManager.Controllers
     {
         public IActionResult Index(string channel)
         {
+            ViewData["Title"] = "Live";
             ViewBag.Channel = channel;
             return View();
         }

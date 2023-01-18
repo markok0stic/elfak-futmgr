@@ -1,6 +1,6 @@
 using Shared.Models;
 
-namespace GamePlayer.Matchmaking.Services;
+namespace MatchPlayer.Matchmaking.Services;
 
 internal interface IScoresGenerator
 {

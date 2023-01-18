@@ -2,6 +2,7 @@ namespace Shared.Models;
 
 public class Match
 {
-    internal Squad HomeSquad { get; set; }
-    internal Squad AwaySquad { get; set; }
+    public Squad HomeSquad { get; set; }
+    public Squad AwaySquad { get; set; }
+    public string Channel { get; set; }
 }

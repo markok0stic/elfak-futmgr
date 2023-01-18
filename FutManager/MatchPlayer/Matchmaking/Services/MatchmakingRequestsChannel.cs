@@ -1,7 +1,7 @@
 using System.Threading.Channels;
-using GamePlayer.Matchmaking.Requests;
+using MatchPlayer.Matchmaking.Requests;
 
-namespace GamePlayer.Matchmaking.Services;
+namespace MatchPlayer.Matchmaking.Services;
 
 internal sealed class MatchmakingRequestsChannel
 {

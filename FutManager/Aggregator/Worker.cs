@@ -17,7 +17,7 @@ internal sealed class Worker : BackgroundService
     
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        await _subscriber.SubscribeAsync<MatchResult>("scores_1", sub =>
+        await _subscriber.SubscribeAsync<MatchResult>("match_1", sub =>
         {
             _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }", sub.Winner, sub.TimeStamp);
         });

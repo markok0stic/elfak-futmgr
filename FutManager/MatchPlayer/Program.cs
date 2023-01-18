@@ -1,5 +1,5 @@
-using GamePlayer.Matchmaking.Requests;
-using GamePlayer.Matchmaking.Services;
+using MatchPlayer.Matchmaking.Requests;
+using MatchPlayer.Matchmaking.Services;
 using Newtonsoft.Json;
 using Shared.Redis;
 using Shared.Redis.Streaming;

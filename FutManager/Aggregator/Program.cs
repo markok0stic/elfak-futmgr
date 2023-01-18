@@ -5,9 +5,10 @@ using Shared.Redis.Streaming;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services
     .AddHttpContextAccessor()
-    .AddHostedService<Worker>()
     .AddRedis(builder.Configuration)
-    .AddRedisStreaming();
+    .AddRedisStreaming()
+    .AddHostedService<Worker>();
+
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");

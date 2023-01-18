@@ -1,4 +1,4 @@
-namespace Shared.Neo4jClient;
+namespace Shared.Neo4j;
 
 public sealed class Neo4JOptions
 {

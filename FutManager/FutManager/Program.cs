@@ -1,5 +1,5 @@
 using FutManager.Services.RedisHub;
-using Shared.Neo4jClient;
+using Shared.Neo4j;
 using Shared.Redis;
 using Shared.Redis.Streaming;
 

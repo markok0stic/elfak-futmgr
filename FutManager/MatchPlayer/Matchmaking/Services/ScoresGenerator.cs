@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Shared.Models;
 
-namespace GamePlayer.Matchmaking.Services;
+namespace MatchPlayer.Matchmaking.Services;
 
 internal sealed class ScoresGenerator: IScoresGenerator
 {

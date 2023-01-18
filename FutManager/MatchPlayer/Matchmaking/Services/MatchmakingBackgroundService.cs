@@ -1,9 +1,8 @@
-using GamePlayer.Matchmaking.Requests;
-using Newtonsoft.Json;
 using Shared.Streaming;
 using System.Collections.Concurrent;
+using MatchPlayer.Matchmaking.Requests;
 
-namespace GamePlayer.Matchmaking.Services;
+namespace MatchPlayer.Matchmaking.Services;
 
 internal sealed class MatchmakingBackgroundService : BackgroundService
 {
@@ -25,20 +24,18 @@ internal sealed class MatchmakingBackgroundService : BackgroundService
         _logger = logger;
         _matchTasks = new ConcurrentDictionary<int, Task>();
     }
-
-
+    
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        _logger.LogInformation("Matchmaking background service has started.");
+        _logger.LogInformation("Matchmaking background service has started.\n Waiting for scheduler to start match.");
         await foreach (var request in _matchmakingRequestsChannel.Requests.Reader.ReadAllAsync(stoppingToken))
         {
-            _logger.LogInformation(
-                $"Matchmaking background service has received the request: '{request.GetType().Name}'.");
+            _logger.LogInformation($"Matchmaking background service has received the request: '{request.GetType().Name}' with matchId: '{request.MatchId}'.");
 
             var _ = request switch
             {
-                StartMatchmaking => StartMatchmakingAsync(),
-                StopMatchmaking => StopMatchmakingAsync(),
+                StartMatchmaking => StartMatchmakingAsync(request.MatchId),
+                StopMatchmaking => StopMatchmakingAsync(request.MatchId),
                 _ => Task.CompletedTask
             };
         }
@@ -46,9 +43,9 @@ internal sealed class MatchmakingBackgroundService : BackgroundService
         _logger.LogInformation("Matchmaking background service has stopped.");
     }
 
-    private async Task StartMatchmakingAsync()
+    private async Task StartMatchmakingAsync(int matchId)
     {
-        int matchId = Interlocked.Increment(ref _matchCounter);
+        Interlocked.Increment(ref _matchCounter);
         var matchTask = StartMatchAsync(matchId);
         _matchTasks.TryAdd(matchId, matchTask);
     }
@@ -58,18 +55,17 @@ internal sealed class MatchmakingBackgroundService : BackgroundService
         await foreach (var scores in _scoresGenerator.StartAsync(matchId))
         {
             _logger.LogInformation($"Publishing the scores for match {matchId}...");
-            await _streamPublisher.PublishAsync($"scores_{matchId}", scores);
+            await _streamPublisher.PublishAsync($"match_{matchId}", scores);
         }
-
         _matchTasks.TryRemove(matchId, out _);
     }
 
-    private async Task StopMatchmakingAsync()
+    private async Task StopMatchmakingAsync(int matchId)
     {
-        if (_matchTasks.TryGetValue(_matchCounter, out var matchTask))
+        if (_matchTasks.TryGetValue(matchId, out var matchTask))
         {
-            await _scoresGenerator.StopAsync(_matchCounter);
-            _matchTasks.TryRemove(_matchCounter, out _);
+            await _scoresGenerator.StopAsync(matchId);
+            _matchTasks.TryRemove(matchId, out _);
             Interlocked.Decrement(ref _matchCounter);
         }
         else
