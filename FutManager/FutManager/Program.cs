@@ -1,6 +1,9 @@
-using FutManager.Services.RedisHub;
+using FutManager.Controllers;
+using FutManager.Hubs;
+using FutManager.Services;
 using Shared.Neo4j;
 using Shared.Redis;
+using Shared.Redis.Server;
 using Shared.Redis.Streaming;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +16,9 @@ builder.Services
     .AddNeo4J(builder.Configuration)
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
+    .AddRedisServer()
     .AddSingleton<RedisHub>()
+    .AddTransient<IHomeService,HomeService>()
     .AddSignalR();
 
 var app = builder.Build();

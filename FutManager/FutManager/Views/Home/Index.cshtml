@@ -1,8 +1,11 @@
-@model dynamic
+@model FutManager.Models.ViewModels.HomeViewModel
 @{
     Layout = "../Shared/_Layout.cshtml";
 }
-<p>HELLOPOOO</p>
-<a href="@Url.Action("Index", "LiveMatch", new { channel = "match_1" })" >Scores 1</a>
-<a href="@Url.Action("Index", "LiveMatch", new { channel = "match_2" })" >Scores 2</a>
-<a href="@Url.Action("Index", "LiveMatch", new { channel = "match_3" })" >Scores 3</a>
+<p>Currently Live Matches</p>
+@{
+    foreach (var liveMatch in Model.LiveMatches)
+    {
+        <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })" >@liveMatch.Channel</a>
+    }
+}

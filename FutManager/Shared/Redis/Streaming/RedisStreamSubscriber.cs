@@ -14,7 +14,8 @@ internal sealed class RedisStreamSubscriber : IStreamSubscriber
     }
 
     public Task SubscribeAsync<T>(string topic, Action<T> handler) where T : class
-        => _subscriber.SubscribeAsync(topic, (_, data) =>
+    {
+        return _subscriber.SubscribeAsync(topic, (_, data) =>
         {
             var payload = JsonConvert.DeserializeObject<T>(data);
             if (payload is null)
@@ -24,4 +25,5 @@ internal sealed class RedisStreamSubscriber : IStreamSubscriber
 
             handler(payload);
         });
+    }
 }

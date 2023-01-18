@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Shared.Redis.Client;
 using StackExchange.Redis;
 
 namespace Shared.Redis;
@@ -14,8 +13,7 @@ public static class Extension
         section.Bind(options);
         services
             .Configure<RedisOptions>(section)
-            .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(options.Uri))
-            .AddSingleton<IRedisDbClient,RedisDbClient>();
+            .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(options.Uri));
         return services;
     }
 }

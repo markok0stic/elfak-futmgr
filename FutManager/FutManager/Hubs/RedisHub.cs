@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.SignalR;
 using Shared.Models;
 using Shared.Streaming;
 
-namespace FutManager.Services.RedisHub;
+namespace FutManager.Hubs;
 
-public sealed class RedisHub : Hub
+internal sealed class RedisHub : Hub
 {
     private readonly IStreamSubscriber _subscriber;
     private readonly ILogger<RedisHub> _logger;

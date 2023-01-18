@@ -30,5 +30,4 @@ app.MapPost("/genscores/stop", async (HttpContext context, MatchmakingRequestsCh
     if (data != null) await channel.Requests.Writer.WriteAsync(data);
     return Results.Ok();
 });
-
 app.Run();

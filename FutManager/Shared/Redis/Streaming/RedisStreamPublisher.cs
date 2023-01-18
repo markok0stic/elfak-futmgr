@@ -15,16 +15,7 @@ internal sealed class RedisStreamPublisher : IStreamPublisher
     
     public Task PublishAsync<T>(string topic, T data) where T : class
     {
-        try
-        {
-            // TODO: this one is not working well
-            var payload = JsonConvert.SerializeObject(data);
-            return _subscriber.PublishAsync(topic, payload);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        var payload = JsonConvert.SerializeObject(data);
+        return _subscriber.PublishAsync(topic, payload);
     }
 }
