@@ -20,6 +20,10 @@ internal sealed class RedisHub : Hub
         await Groups.AddToGroupAsync(Context.ConnectionId, channel);
         await _subscriber.SubscribeAsync<MatchResult>(channel, sub =>
         {
+            if (sub.Winner == channel)
+            {
+                _subscriber.UnsubscribeAsync(channel);
+            }
             _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }", sub.Winner, sub.TimeStamp); ;
             Clients.Group(channel).SendAsync("ReceiveScore", sub);
         });

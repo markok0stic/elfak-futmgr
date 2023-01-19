@@ -8,6 +8,6 @@ public static class Extension
 {
     public static IServiceCollection AddRedisServer(this IServiceCollection services)
     {
-        return services.AddSingleton<IRedisDbClient, RedisDbClient>();
+        return services.AddSingleton<IRedisServerClient, RedisServerClient>();
     }
 }

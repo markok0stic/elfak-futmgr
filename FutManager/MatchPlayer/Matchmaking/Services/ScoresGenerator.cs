@@ -21,13 +21,21 @@ internal sealed class ScoresGenerator: IScoresGenerator
     public async IAsyncEnumerable<MatchResult> StartAsync(int matchId)
     {
         _matchRunningStatus[matchId] = true;
-        while (_matchRunningStatus.TryGetValue(matchId, out var isRunning) && isRunning)
-        {
+        var i = 0;
+        while (_matchRunningStatus.TryGetValue(matchId, out var isRunning) && isRunning && i<=30)
+        {            
             var result = new MatchResult()
             {
                 Winner = "Benfica",
                 TimeStamp = DateTimeOffset.Now
             };
+            
+            if (i == 30)
+            {
+                result.Winner = $"match_{matchId}";
+            }
+            
+            i++;
             _logger.LogInformation("Match winner: {ResultWinner} Time:{ResultTimeStamp}", result.Winner, result.TimeStamp);
             yield return result;
             await Task.Delay(1000);

@@ -4,25 +4,24 @@ using StackExchange.Redis;
 
 namespace Shared.Redis.Server;
 
-public interface IRedisDbClient
+public interface IRedisServerClient
 {
     Task<List<LiveMatch>> GetActiveMatches();
 }
 
-public class RedisDbClient : IRedisDbClient
+public class RedisServerClient : IRedisServerClient
 {
-    private readonly IDatabase _database;
+    private readonly IServer _server;
     
-    public RedisDbClient(IConnectionMultiplexer connectionMultiplexer)
+    public RedisServerClient(IConnectionMultiplexer connectionMultiplexer, IOptions<RedisOptions> options)
     {
-        _database = connectionMultiplexer.GetDatabase();
+        _server = connectionMultiplexer.GetServer($"{options.Value.Uri}:{options.Value.Port}");
     }
     
     public async Task<List<LiveMatch>> GetActiveMatches()
     {
         var activeMatches = new List<LiveMatch>();
-        var a = await _database.ExecuteAsync("PUBSUB CHANNELS");
-        /*foreach (var channel in  ))
+        foreach (var channel in await _server.SubscriptionChannelsAsync())
         {
             var channelString = channel.ToString();
             if(!channelString.Contains("match"))
@@ -30,7 +29,7 @@ public class RedisDbClient : IRedisDbClient
             var item = new LiveMatch();
             item.Channel = channelString;
             activeMatches.Add(item);
-        }*/
+        }
         return activeMatches;
     }
 }

@@ -26,4 +26,9 @@ internal sealed class RedisStreamSubscriber : IStreamSubscriber
             handler(payload);
         });
     }
+
+    public Task UnsubscribeAsync(string topic)
+    {
+        return _subscriber.UnsubscribeAsync(topic);
+    }
 }

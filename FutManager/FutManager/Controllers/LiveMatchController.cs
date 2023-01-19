@@ -7,7 +7,8 @@ namespace FutManager.Controllers
         public IActionResult Index(string channel)
         {
             ViewData["Title"] = "Live";
-            return View(channel);
+            ViewBag.Channel = channel;
+            return View();
         }
     }
 }

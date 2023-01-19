@@ -16,14 +16,14 @@ builder.Services
 var app = builder.Build();
 
 app.MapGet("/", () => "Hello World!");
-app.MapPost("/genscores/start", async (HttpContext context, MatchmakingRequestsChannel channel) =>
+app.MapPost("/startMatch", async (HttpContext context, MatchmakingRequestsChannel channel) =>
 {
     var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
     var data = JsonConvert.DeserializeObject<StartMatchmaking>(requestBody);
     if (data != null) await channel.Requests.Writer.WriteAsync(data);
     return Results.Ok();
 });
-app.MapPost("/genscores/stop", async (HttpContext context, MatchmakingRequestsChannel channel) =>
+app.MapPost("/stopMatch", async (HttpContext context, MatchmakingRequestsChannel channel) =>
 {
     var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
     var data = JsonConvert.DeserializeObject<StopMatchmaking>(requestBody);

@@ -10,12 +10,12 @@ public interface IHomeService
 
 public class HomeService: IHomeService
 {
-    private readonly IRedisDbClient _redisDbClient;
+    private readonly IRedisServerClient _redisServerClient;
     private readonly ILogger<HomeService> _logger;
 
-    public HomeService(IRedisDbClient redisDbClient, ILogger<HomeService> logger)
+    public HomeService(IRedisServerClient redisServerClient, ILogger<HomeService> logger)
     {
-        _redisDbClient = redisDbClient;
+        _redisServerClient = redisServerClient;
         _logger = logger;
     }
 
@@ -24,7 +24,7 @@ public class HomeService: IHomeService
         var liveMatches = new List<LiveMatch>();
         try
         {
-            liveMatches = await _redisDbClient.GetActiveMatches();
+            liveMatches = await _redisServerClient.GetActiveMatches();
         }
         catch (Exception e)
         {
