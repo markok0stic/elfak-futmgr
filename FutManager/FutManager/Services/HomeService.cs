@@ -1,35 +1,37 @@
 using Shared.Models;
 using Shared.Redis.Server;
 
-namespace FutManager.Services;
-
-public interface IHomeService
+namespace FutManager.Services
 {
-    Task<List<LiveMatch>> GetAllActiveMatches();
-}
-
-public class HomeService: IHomeService
-{
-    private readonly IRedisServerClient _redisServerClient;
-    private readonly ILogger<HomeService> _logger;
-
-    public HomeService(IRedisServerClient redisServerClient, ILogger<HomeService> logger)
+    public interface IHomeService
     {
-        _redisServerClient = redisServerClient;
-        _logger = logger;
+        Task<List<LiveMatch>> GetAllActiveMatches();
     }
 
-    public async Task<List<LiveMatch>> GetAllActiveMatches()
+    public class HomeService : IHomeService
     {
-        var liveMatches = new List<LiveMatch>();
-        try
+        private readonly IRedisServerClient _redisServerClient;
+        private readonly ILogger<HomeService> _logger;
+
+        public HomeService(IRedisServerClient redisServerClient, ILogger<HomeService> logger)
         {
-            liveMatches = await _redisServerClient.GetActiveMatches();
+            _redisServerClient = redisServerClient;
+            _logger = logger;
         }
-        catch (Exception e)
+
+        public async Task<List<LiveMatch>> GetAllActiveMatches()
         {
-           _logger.LogError(e,"");
+            var liveMatches = new List<LiveMatch>();
+            try
+            {
+                liveMatches = await _redisServerClient.GetActiveMatches();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e, "");
+            }
+            return liveMatches;
         }
-        return liveMatches;
     }
 }
+

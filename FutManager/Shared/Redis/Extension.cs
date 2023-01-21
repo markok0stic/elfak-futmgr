@@ -2,18 +2,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using StackExchange.Redis;
 
-namespace Shared.Redis;
-
-public static class Extension
+namespace Shared.Redis
 {
-    public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+    public static class Extension
     {
-        var section = configuration.GetSection("Redis");
-        var options = new RedisOptions();
-        section.Bind(options);
-        services
-            .Configure<RedisOptions>(section)
-            .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(options.Uri));
-        return services;
+        public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration configuration)
+        {
+            var section = configuration.GetSection("Redis");
+            var options = new RedisOptions();
+            section.Bind(options);
+            services
+                .Configure<RedisOptions>(section)
+                .AddSingleton<IConnectionMultiplexer>(ConnectionMultiplexer.Connect(options.Uri));
+            return services;
+        }
     }
 }
+

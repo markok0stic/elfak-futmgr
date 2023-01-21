@@ -1,6 +1,8 @@
-namespace Aggregator.Listener.Requests;
-
-internal interface IAggregatorRequest
+namespace Aggregator.Listener.Requests
 {
-    public int MatchId { get; set; }
+    internal interface IAggregatorRequest
+    {
+        public int MatchId { get; set; }
+    }
 }
+

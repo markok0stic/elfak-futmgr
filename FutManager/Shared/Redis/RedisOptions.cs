@@ -1,7 +1,9 @@
-namespace Shared.Redis;
-
-public sealed class RedisOptions
+namespace Shared.Redis
 {
-    public string? Uri { get; set; }
-    public string Port { get; set; }
+    public sealed class RedisOptions
+    {
+        public string? Uri { get; set; }
+        public string Port { get; set; }
+    }
 }
+

@@ -1,9 +1,11 @@
 using System.Threading.Channels;
 using MatchPlayer.Matchmaking.Requests;
 
-namespace MatchPlayer.Matchmaking.Services;
-
-internal sealed class MatchmakingRequestsChannel
+namespace MatchPlayer.Matchmaking.Services
 {
-    public readonly Channel<IMatchmakingRequest> Requests = Channel.CreateUnbounded<IMatchmakingRequest>();
+    internal sealed class MatchmakingRequestsChannel
+    {
+        public readonly Channel<IMatchmakingRequest> Requests = Channel.CreateUnbounded<IMatchmakingRequest>();
+    }
 }
+

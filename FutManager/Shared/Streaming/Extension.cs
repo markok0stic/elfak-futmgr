@@ -1,13 +1,15 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.Streaming;
-
-public static class Extension
+namespace Shared.Streaming
 {
-    public static IServiceCollection AddStreaming(this IServiceCollection services)
+    public static class Extension
     {
-        return services
-            .AddSingleton<IStreamPublisher, DefaultStreamPublisher>()
-            .AddSingleton<IStreamSubscriber, DefaultStreamSubscriber>();
+        public static IServiceCollection AddStreaming(this IServiceCollection services)
+        {
+            return services
+                .AddSingleton<IStreamPublisher, DefaultStreamPublisher>()
+                .AddSingleton<IStreamSubscriber, DefaultStreamSubscriber>();
+        }
     }
 }
+

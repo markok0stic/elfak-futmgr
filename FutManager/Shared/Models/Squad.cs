@@ -1,6 +1,8 @@
-namespace Shared.Models;
-
-public class Squad
+namespace Shared.Models
 {
-    
+    public class Squad
+    {
+
+    }
 }
+

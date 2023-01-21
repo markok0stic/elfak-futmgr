@@ -1,6 +1,8 @@
-namespace Aggregator.Listener.Requests;
-
-internal record StartAggregation : IAggregatorRequest
+namespace Aggregator.Listener.Requests
 {
-    public int MatchId { get; set; }
+    internal record StartAggregation : IAggregatorRequest
+    {
+        public int MatchId { get; set; }
+    }
 }
+

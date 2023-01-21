@@ -1,6 +1,8 @@
-namespace MatchPlayer.Matchmaking.Requests;
-
-internal interface IMatchmakingRequest
+namespace MatchPlayer.Matchmaking.Requests
 {
-    public int MatchId { get; set; }
+    internal interface IMatchmakingRequest
+    {
+        public int MatchId { get; set; }
+    }
 }
+

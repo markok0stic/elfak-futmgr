@@ -1,6 +1,8 @@
-namespace Shared.Streaming;
-
-public interface IStreamPublisher
+namespace Shared.Streaming
 {
-    Task PublishAsync<T>(string topic, T data) where T : class;
+    public interface IStreamPublisher
+    {
+        Task PublishAsync<T>(string topic, T data) where T : class;
+    }
 }
+

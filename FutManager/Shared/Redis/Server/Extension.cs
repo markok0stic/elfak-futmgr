@@ -1,13 +1,13 @@
-
-
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Shared.Redis.Server;
-
-public static class Extension
+namespace Shared.Redis.Server
 {
-    public static IServiceCollection AddRedisServer(this IServiceCollection services)
+    public static class Extension
     {
-        return services.AddSingleton<IRedisServerClient, RedisServerClient>();
+        public static IServiceCollection AddRedisServer(this IServiceCollection services)
+        {
+            return services.AddSingleton<IRedisServerClient, RedisServerClient>();
+        }
     }
 }
+

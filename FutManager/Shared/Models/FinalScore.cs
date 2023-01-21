@@ -1,6 +1,8 @@
-namespace Shared.Models;
-
-public class FinalScore
+namespace Shared.Models
 {
-    
+    public class FinalScore
+    {
+
+    }
 }
+

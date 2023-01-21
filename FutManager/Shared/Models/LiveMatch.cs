@@ -1,6 +1,8 @@
-namespace Shared.Models;
-
-public class LiveMatch
+namespace Shared.Models
 {
-    public string Channel { get; set; }
+    public class LiveMatch
+    {
+        public string Channel { get; set; }
+    }
 }
+

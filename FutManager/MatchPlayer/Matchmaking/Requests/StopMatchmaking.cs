@@ -1,6 +1,8 @@
-namespace MatchPlayer.Matchmaking.Requests;
-
-internal record StopMatchmaking : IMatchmakingRequest
+namespace MatchPlayer.Matchmaking.Requests
 {
-    public int MatchId { get; set; }
+    internal record StopMatchmaking : IMatchmakingRequest
+    {
+        public int MatchId { get; set; }
+    }
 }
+

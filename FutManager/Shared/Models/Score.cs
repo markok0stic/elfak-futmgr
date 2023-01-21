@@ -1,6 +1,7 @@
-namespace Shared.Models;
-
-public class Score
+namespace Shared.Models
 {
-    
+    public class Score
+    {
+
+    }
 }

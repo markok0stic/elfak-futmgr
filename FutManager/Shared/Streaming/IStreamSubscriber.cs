@@ -1,7 +1,9 @@
-namespace Shared.Streaming;
-
-public interface IStreamSubscriber
+namespace Shared.Streaming
 {
-    Task SubscribeAsync<T>(string topic, Action<T> handler) where T : class;
-    Task UnsubscribeAsync(string topic);
+    public interface IStreamSubscriber
+    {
+        Task SubscribeAsync<T>(string topic, Action<T> handler) where T : class;
+        Task UnsubscribeAsync(string topic);
+    }
 }
+
