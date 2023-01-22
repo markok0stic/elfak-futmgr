@@ -4,6 +4,8 @@ namespace Shared.Models
     {
         public Squad HomeSquad { get; set; }
         public Squad AwaySquad { get; set; }
+        public string Result { get; set; }
+        public int ID { get; set; }
     }
 }
 

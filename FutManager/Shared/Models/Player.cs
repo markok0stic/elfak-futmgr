@@ -1,3 +1,5 @@
+using Shared.Enums;
+
 namespace Shared.Models
 {
     public class Player
@@ -8,6 +10,8 @@ namespace Shared.Models
         public int Age { get; set; }
         public string Nationality { get; set; }
         public Squad IrlSquad { get; set; }
+        public FieldPositions Position { get; set; }
+        public int ID { get; set; }
     }
 }
 
