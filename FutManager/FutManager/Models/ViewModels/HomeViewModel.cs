@@ -1,10 +1,11 @@
 using Shared.Models;
+using Shared.Models.MatchModels;
 
 namespace FutManager.Models.ViewModels
 {
     public class HomeViewModel
     {
-        public List<LiveMatch> LiveMatches { get; set; }
+        public List<CurrentlyLiveMatch> LiveMatches { get; set; }
     }
 }
 

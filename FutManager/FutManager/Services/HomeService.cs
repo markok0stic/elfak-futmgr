@@ -1,11 +1,12 @@
 using Shared.Models;
+using Shared.Models.MatchModels;
 using Shared.Redis.Server;
 
 namespace FutManager.Services
 {
     public interface IHomeService
     {
-        Task<List<LiveMatch>> GetAllActiveMatches();
+        Task<List<CurrentlyLiveMatch>> GetAllActiveMatches();
     }
 
     public class HomeService : IHomeService
@@ -19,9 +20,9 @@ namespace FutManager.Services
             _logger = logger;
         }
 
-        public async Task<List<LiveMatch>> GetAllActiveMatches()
+        public async Task<List<CurrentlyLiveMatch>> GetAllActiveMatches()
         {
-            var liveMatches = new List<LiveMatch>();
+            var liveMatches = new List<CurrentlyLiveMatch>();
             try
             {
                 liveMatches = await _redisServerClient.GetActiveMatches();

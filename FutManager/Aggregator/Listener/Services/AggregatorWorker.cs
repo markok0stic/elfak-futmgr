@@ -1,5 +1,6 @@
 using Aggregator.Listener.Requests;
 using Shared.Models;
+using Shared.Models.MatchModels;
 using Shared.Streaming;
 
 namespace Aggregator.Listener.Services
@@ -32,13 +33,13 @@ namespace Aggregator.Listener.Services
 
         private Task StartAggregationAsync(int requestMatchId)
         {
-            return _subscriber.SubscribeAsync<MatchResult>($"match_{requestMatchId}", sub =>
+            return _subscriber.SubscribeAsync<MatchLiveMessage>($"match_{requestMatchId}", sub =>
             {
-                if (sub.Winner == $"match_{requestMatchId}")
+                /*if (sub.Winner == $"match_{requestMatchId}")
                 {
                     _subscriber.UnsubscribeAsync($"match_{requestMatchId}");
-                }
-                _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }", sub.Winner, sub.TimeStamp);
+                }*/
+                _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }"/*, sub.Winner, sub.TimeStamp*/);
             });
         }
     }

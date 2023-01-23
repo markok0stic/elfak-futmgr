@@ -10,7 +10,7 @@ builder.Services
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddSingleton<MatchmakingRequestsChannel>()
-    .AddSingleton<IScoresGenerator,ScoresGenerator>()
+    .AddSingleton<ILiveMessageGenerator,LiveMessageGenerator>()
     .AddHostedService<MatchmakingBackgroundService>();
 
 var app = builder.Build();

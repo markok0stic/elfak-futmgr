@@ -1,12 +1,13 @@
 ﻿using Microsoft.Extensions.Options;
 using Shared.Models;
+using Shared.Models.MatchModels;
 using StackExchange.Redis;
 
 namespace Shared.Redis.Server
 {
     public interface IRedisServerClient
     {
-        Task<List<LiveMatch>> GetActiveMatches();
+        Task<List<CurrentlyLiveMatch>> GetActiveMatches();
     }
 
     public class RedisServerClient : IRedisServerClient
@@ -18,15 +19,15 @@ namespace Shared.Redis.Server
             _server = connectionMultiplexer.GetServer($"{options.Value.Uri}:{options.Value.Port}");
         }
 
-        public async Task<List<LiveMatch>> GetActiveMatches()
+        public async Task<List<CurrentlyLiveMatch>> GetActiveMatches()
         {
-            var activeMatches = new List<LiveMatch>();
+            var activeMatches = new List<CurrentlyLiveMatch>();
             foreach (var channel in await _server.SubscriptionChannelsAsync())
             {
                 var channelString = channel.ToString();
                 if (!channelString.Contains("match"))
                     continue;
-                var item = new LiveMatch();
+                var item = new CurrentlyLiveMatch();
                 item.Channel = channelString;
                 activeMatches.Add(item);
             }

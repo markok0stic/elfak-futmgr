@@ -1,4 +1,5 @@
-﻿using Shared.Models;
+﻿using Shared.Models.Football_Player_Models;
+using Shared.Models.Squad_Models;
 
 namespace SquadManager.Builder
 {

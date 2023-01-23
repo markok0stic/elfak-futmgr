@@ -1,6 +1,7 @@
 using Shared.Enums;
+using Shared.Models.Squad_Models;
 
-namespace Shared.Models
+namespace Shared.Models.Football_Player_Models
 {
     public class Player
     {

@@ -9,7 +9,7 @@
         var channel = '@ViewBag.Channel';
         var connection = new signalR.HubConnectionBuilder().withUrl("/redisHub").build();
 
-        connection.on("ReceiveScore", function (score) {
+        connection.on("ReceiveMessage", function (score) {
             console.log(score);
         });
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.SignalR;
 using Shared.Models;
+using Shared.Models.MatchModels;
 using Shared.Streaming;
 
 namespace FutManager.Hubs
@@ -18,14 +19,13 @@ namespace FutManager.Hubs
         public async Task StreamMatches(string channel)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, channel);
-            await _subscriber.SubscribeAsync<MatchResult>(channel, sub =>
+            await _subscriber.SubscribeAsync<MatchLiveMessage>(channel, sub =>
             {
-                if (sub.Winner == channel)
+                /*if (sub.Winner == channel)
                 {
                     _subscriber.UnsubscribeAsync(channel);
-                }
-                _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }", sub.Winner, sub.TimeStamp); ;
-                Clients.Group(channel).SendAsync("ReceiveScore", sub);
+                }*/
+                Clients.Group(channel).SendAsync("ReceiveMessage", sub);
             });
         }
 
