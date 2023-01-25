@@ -19,7 +19,15 @@
         </div>
         <p class="drop">Manage Squad</p>
         <div class="manageSquad displayNone">
-            Here zou manage squad options
+            <div>
+                <input placeholder="Change name" />
+                <button>Change</button>
+            </div>
+            <div>
+                <input placeholder="Change balance" type="number" min="0" />
+                <button>Change</button>
+            </div>
+            
         </div>
         <p class="drop">Add Player</p>
         <div class="addPlayer displayNone">
@@ -52,65 +60,6 @@
     </div>
 </div>
 
-<style>
-    .main
-    {
-        display: flex;
-        flex-direction: row;
-        width: 100%
-    }
-    .sqmanager
-    {
-        display:flex;
-        flex-direction: column;
-        width: 60%;
-    }
-    .matches
-    {
-        width: 40%;
-    }
-    .sqParagraph
-    {
-        align-content:center;
-    }
-    .displayNone
-    {
-        display: none;
-    }
-    .displayFlex
-    {
-        display:flex;
-    }
-    .drop
-    {
-        cursor: pointer;
-    }
-    .addPlayer,
-    .addSquad
-    {
-        flex-direction:column;
-    }
-</style>
-
-<script>
-    var dropDown=document.querySelectorAll(".drop");
-    dropDown.forEach(drop => {
-        let down = true;
-        drop.addEventListener("click", ()=> {
-            if(down)
-            {
-                drop.nextElementSibling.classList.remove("displayNone");
-                drop.nextElementSibling.classList.add("displayFlex");
-                down = !down
-            }
-            else
-            {
-                drop.nextElementSibling.classList.remove("displayFlex");
-                drop.nextElementSibling.classList.add("displayNone");
-                down = !down
-            }
-        })
-    })
-</script>
+<script src="scripts/home.js"></script>
 
 

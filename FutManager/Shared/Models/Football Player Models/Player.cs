@@ -10,7 +10,7 @@ namespace Shared.Models.Football_Player_Models
         public int OverallRating { get; set; }
         public int Age { get; set; }
         public string Nationality { get; set; }
-        public Squad IrlSquad { get; set; }
+        public Squad? IrlSquad { get; set; }
         public FieldPositions Position { get; set; }
         public int ID { get; set; }
     }

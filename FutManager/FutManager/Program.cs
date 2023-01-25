@@ -34,9 +34,9 @@ else {
 }
 
 app.UseHttpsRedirection();
-/* might be necessary 
+ 
 app.UseStaticFiles();
-*/
+
 app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
