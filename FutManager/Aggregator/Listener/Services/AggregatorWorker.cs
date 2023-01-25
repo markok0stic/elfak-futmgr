@@ -39,7 +39,7 @@ namespace Aggregator.Listener.Services
                 {
                     _subscriber.UnsubscribeAsync($"match_{requestMatchId}");
                 }*/
-                _logger.LogInformation("Winner is {ObjWinner} and TS: {ObjTimeStamp }"/*, sub.Winner, sub.TimeStamp*/);
+                _logger.LogInformation( sub.Message);
             });
         }
     }

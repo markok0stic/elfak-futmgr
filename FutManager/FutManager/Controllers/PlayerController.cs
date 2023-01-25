@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
 using Shared.Models.Football_Player_Models;
+using Shared.Models.FootballPlayer;
 
 namespace FutManager.Controllers
 {

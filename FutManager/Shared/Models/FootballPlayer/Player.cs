@@ -1,7 +1,7 @@
 using Shared.Enums;
-using Shared.Models.Squad_Models;
+using Shared.Models.Squaq;
 
-namespace Shared.Models.Football_Player_Models
+namespace Shared.Models.FootballPlayer
 {
     public class Player
     {

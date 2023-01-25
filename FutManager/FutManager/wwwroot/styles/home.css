@@ -14,10 +14,10 @@ button
     width: 100%
 }
 
-.sqmanager {
+.columnFlex {
     display: flex;
     flex-direction: column;
-    width: 60%;
+    width: 33%;
 }
 
 .matches {

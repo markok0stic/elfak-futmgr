@@ -20,7 +20,7 @@ app.MapPost("/startMatch", async (HttpContext context, MatchmakingRequestsChanne
 {
     var requestBody = await new StreamReader(context.Request.Body).ReadToEndAsync();
     var data = JsonConvert.DeserializeObject<StartMatchmaking>(requestBody);
-    if (data != null) await channel.Requests.Writer.WriteAsync(data);
+    if (data?.Match != null) await channel.Requests.Writer.WriteAsync(data);
     return Results.Ok();
 });
 app.MapPost("/stopMatch", async (HttpContext context, MatchmakingRequestsChannel channel) =>

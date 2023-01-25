@@ -1,4 +1,4 @@
-namespace Shared.Models.Squad_Models
+namespace Shared.Models.Squaq
 {
     public class Squad
     {

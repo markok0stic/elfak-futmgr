@@ -32,7 +32,7 @@ namespace MatchPlayer.Matchmaking.Services
             _logger.LogInformation("Matchmaking background service has started.\n Waiting for scheduler to start match.");
             await foreach (var request in _matchmakingRequestsChannel.Requests.Reader.ReadAllAsync(stoppingToken))
             {
-                _logger.LogInformation($"Matchmaking background service has received the request: '{request.GetType().Name}' with matchId: '{request.MatchId}'.");
+                _logger.LogInformation($"Matchmaking background service has received the request: '{request.GetType().Name}' with matchId: '{request.Match.Id}'.");
 
                 var _ = request switch
                 {
