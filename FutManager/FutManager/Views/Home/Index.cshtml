@@ -2,10 +2,115 @@
 @{
     Layout = "../Shared/_Layout.cshtml";
 }
-<p>Currently Live Matches</p>
-@{
-    foreach (var liveMatch in Model.LiveMatches)
+
+<div class="main">
+    <div class ="sqmanager">
+        <h1 class="sqParagraph">Squad Manager</h1>
+        <p class="drop">Add Squad</p>
+        <div class="addSquad displayNone">
+            <input placeholder="Name"/>
+            <input placeholder="Balance" type="number" min="0"/>
+            <button>Add</button>
+        </div>
+        <p class="drop">Remove Squad</p>
+        <div class="removeSquad displayNone">
+            <input placeholder="Name" />
+            <button>Remove</button>
+        </div>
+        <p class="drop">Manage Squad</p>
+        <div class="manageSquad displayNone">
+            Here zou manage squad options
+        </div>
+        <p class="drop">Add Player</p>
+        <div class="addPlayer displayNone">
+            <input placeholder="First name" />
+            <input placeholder="Last name" />
+            <input placeholder="Rating" type="number" min="0" />
+            <input placeholder="Age" type="number" min="16" />
+            <input placeholder="Nationality" />
+            <input placeholder="Squad" />
+            <input placeholder="Position" />
+            <button>Add</button>
+        </div>
+        <p class="drop">Remove Player</p>
+        <div class="removePlayer displayNone">
+
+        </div>
+        <p class="drop">Manage Player</p>
+        <div class="managePlayer displayNone">
+            Here you manage player options
+        </div>
+    </div>
+    <div class="matches">
+        <h1>Currently Live Matches</h1>
+        @{
+            foreach (var liveMatch in Model.LiveMatches)
+            {
+                <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })">@liveMatch.Channel</a>
+            }
+        }
+    </div>
+</div>
+
+<style>
+    .main
     {
-        <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })" >@liveMatch.Channel</a>
+        display: flex;
+        flex-direction: row;
+        width: 100%
     }
-}
+    .sqmanager
+    {
+        display:flex;
+        flex-direction: column;
+        width: 60%;
+    }
+    .matches
+    {
+        width: 40%;
+    }
+    .sqParagraph
+    {
+        align-content:center;
+    }
+    .displayNone
+    {
+        display: none;
+    }
+    .displayFlex
+    {
+        display:flex;
+    }
+    .drop
+    {
+        cursor: pointer;
+    }
+    .addPlayer,
+    .addSquad
+    {
+        flex-direction:column;
+    }
+</style>
+
+<script>
+    var dropDown=document.querySelectorAll(".drop");
+    dropDown.forEach(drop => {
+        let down = true;
+        drop.addEventListener("click", ()=> {
+            if(down)
+            {
+                drop.nextElementSibling.classList.remove("displayNone");
+                drop.nextElementSibling.classList.add("displayFlex");
+                down = !down
+            }
+            else
+            {
+                drop.nextElementSibling.classList.remove("displayFlex");
+                drop.nextElementSibling.classList.add("displayNone");
+                down = !down
+            }
+        })
+    })
+</script>
+
+
