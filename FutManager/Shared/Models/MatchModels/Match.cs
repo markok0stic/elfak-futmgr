@@ -9,7 +9,7 @@ namespace Shared.Models.MatchModels
         public Squad HomeSquad { get; set; }
         public Squad AwaySquad { get; set; }
         public List<Score> Scores { get; set; }
-        public string Result { get; set; }
+        public string? Result { get; set; }
         public DateTime TimeStamp { get; set; }
     }
 }

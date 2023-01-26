@@ -23,8 +23,7 @@ public class SchedulerService: ISchedulerService
         _matchPlayerBaseUrl = options.Value.MatchPlayerBaseUrl;
         _aggregatorBaseUrl = options.Value.AggregatorBaseUrl;
     }
-
-
+    
     public async Task<bool> ScheduleMatch(Match match)
     {
         var result = true;

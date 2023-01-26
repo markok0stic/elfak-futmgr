@@ -33,14 +33,18 @@ namespace Aggregator.Listener.Services
 
         private Task StartAggregationAsync(int requestMatchId)
         {
-            return _subscriber.SubscribeAsync<MatchLiveMessage>($"match_{requestMatchId}", sub =>
+            return _subscriber.SubscribeAsync<MatchLiveMessage>($"match_{requestMatchId}", async sub =>
             {
-                /*if (sub.Winner == $"match_{requestMatchId}")
-                {
-                    _subscriber.UnsubscribeAsync($"match_{requestMatchId}");
-                }*/
+                if (sub.Result != null)
+                    await StopAggregationAsync(requestMatchId);
                 _logger.LogInformation( sub.Message);
             });
+        }
+        
+        private Task StopAggregationAsync(int requestMatchId)
+        {
+            _logger.LogInformation("Match ended");
+            return _subscriber.UnsubscribeAsync($"match_{requestMatchId}");
         }
     }
 }

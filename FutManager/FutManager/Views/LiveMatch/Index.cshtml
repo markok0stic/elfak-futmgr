@@ -4,15 +4,14 @@
 <div id="scores"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@@aspnet/signalr@1.1.4/dist/browser/signalr.js"></script>
-
 <script>
         var channel = '@ViewBag.Channel';
         var connection = new signalR.HubConnectionBuilder().withUrl("/redisHub").build();
-
+        
         connection.on("ReceiveMessage", function (score) {
             console.log(score);
         });
-
+        
         connection.start().then(function () {
             connection.invoke("StreamMatches", channel).catch(function (err) {
                 return console.error(err.toString());

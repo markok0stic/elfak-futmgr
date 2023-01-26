@@ -28,9 +28,15 @@ namespace MatchPlayer.Matchmaking.Services
             var i = 0;
             while (_matchRunningStatus.TryGetValue(match.Id, out var isRunning) && isRunning && i <= 90)
             {
+                    
                 var liveMessage = new MatchLiveMessage();
-                liveMessage.MatchId = match.Id;
+                liveMessage.Id = match.Id;
                 _logger.LogInformation(liveMessage.Message);
+                if (i == 90)
+                {
+                    liveMessage.Result = "1";
+                    _logger.LogInformation("Match ended");
+                }
                 yield return liveMessage;
                 i++;
                 await Task.Delay(_matchDuration*1000);

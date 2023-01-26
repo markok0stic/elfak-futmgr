@@ -21,10 +21,10 @@ namespace FutManager.Hubs
             await Groups.AddToGroupAsync(Context.ConnectionId, channel);
             await _subscriber.SubscribeAsync<MatchLiveMessage>(channel, sub =>
             {
-                /*if (sub.Winner == channel)
+                if (sub.Result != null)
                 {
                     _subscriber.UnsubscribeAsync(channel);
-                }*/
+                }
                 Clients.Group(channel).SendAsync("ReceiveMessage", sub);
             });
         }
