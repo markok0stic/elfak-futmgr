@@ -20,7 +20,7 @@ namespace FutManager.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPlayer([FromBody] Player player)
         {
-            var query1 = _graphClient.Cypher.Match("(n:Player)").Return<string>("max(n.id)");
+            var query1 = _graphClient.Cypher.Match("(n:Player)").Return<int>("max(n.id)");
             int maxId = 0;
             try
             {
@@ -28,7 +28,7 @@ namespace FutManager.Controllers
                 {
                     await result;
                     if (result != null)
-                        maxId = Convert.ToInt32(result);
+                        maxId = Convert.ToInt32(result.Result.FirstOrDefault());
                 }
             }
             catch (Exception e)
@@ -39,7 +39,7 @@ namespace FutManager.Controllers
             var query = _graphClient.Cypher.Create("(n:Player{firstname:'" + player.FirstName
                                                             + "', lastname:'" + player.LastName
                                                             + "', rating:" + player.OverallRating
-                                                            + ", id:" + maxId + 1
+                                                            + ", id:" + (maxId + 1)
                                                             + ", age:'" + player.Age
                                                             + "', nationality:'" + player.Nationality
                                                             + "', position:'" + player.Position + "'})");
@@ -58,7 +58,11 @@ namespace FutManager.Controllers
             var query = _graphClient.Cypher.Match("(n:Player)")
                                          .Where("(n.id>" + start + " and n.id<" + end + ")")
                                          .Return<Player>("n");
-            var result = await query.ExecuteWithoutResultsAsync();
+           
+            var result = await query.ResultsAsync;
+            List<Player> players = result.ToList();
+
+            return Ok();
         }
 
     }
