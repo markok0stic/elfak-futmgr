@@ -1,7 +1,3 @@
-@{
-}
-
-
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
@@ -10,9 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="styles/home.css"/>
     </head>
-    <body>
-        @Html.AntiForgeryToken()
-        @RenderBody()
-    @*  Script Includes  *@
-    </body>
+<body>
+@Html.AntiForgeryToken()
+@RenderBody()
+</body>
 </html>

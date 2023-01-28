@@ -1,4 +1,5 @@
 using Aggregator.Listener.Requests;
+using Newtonsoft.Json;
 using Shared.Models;
 using Shared.Models.MatchModels;
 using Shared.Streaming;
@@ -37,7 +38,7 @@ namespace Aggregator.Listener.Services
             {
                 if (sub.Result != null)
                     await StopAggregationAsync(requestMatchId);
-                _logger.LogInformation( sub.Message);
+                _logger.LogInformation(JsonConvert.SerializeObject(sub));
             });
         }
         

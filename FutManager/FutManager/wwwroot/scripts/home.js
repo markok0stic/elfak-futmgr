@@ -1,4 +1,6 @@
-﻿var dropDown = document.querySelectorAll(".drop");
+﻿const scheduler = "https://localhost:7044";
+
+var dropDown = document.querySelectorAll(".drop");
 dropDown.forEach(drop => {
     let down = true;
     drop.addEventListener("click", () => {
@@ -14,3 +16,57 @@ dropDown.forEach(drop => {
         }
     })
 })
+
+async function startPractice() {
+    const payload = JSON.stringify({
+    "id": 1,
+    "homeSquad":{
+        "name":"Brazil"
+    },
+    "awaySquad":{
+        "name":"Aregentina"  
+    },
+    "scores":[],
+    "result":null
+    });
+    
+    await fetch(`${scheduler}/Schedule/StartPractice`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+    }).then(res => {
+        if (res.ok) {
+            window.location.reload();        
+        }
+        else {
+            alert(`Something went wrong!`);
+        }
+    });
+}
+
+async function scheduleFriendly() {
+    const payload = JSON.stringify({
+        "id": 1,
+        "homeSquad":{
+            "name":"Brazil"
+        },
+        "awaySquad":{
+            "name":"Aregentina"
+        },
+        "scores":[],
+        "result":null
+    });
+
+    await fetch(`${scheduler}/Schedule/StartPractice`, {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+    }).then(res => {
+        if (res.ok) {
+            window.location.reload();
+        }
+        else {
+            alert(`Something went wrong!`);
+        }
+    });
+}

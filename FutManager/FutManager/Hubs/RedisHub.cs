@@ -18,6 +18,7 @@ namespace FutManager.Hubs
 
         public async Task StreamMatches(string channel)
         {
+            await StopStreaming(channel);
             await Groups.AddToGroupAsync(Context.ConnectionId, channel);
             await _subscriber.SubscribeAsync<MatchLiveMessage>(channel, sub =>
             {
@@ -29,6 +30,11 @@ namespace FutManager.Hubs
             });
         }
 
+        public async Task StopStreaming(string channel)
+        {
+            await _subscriber.UnsubscribeAsync(channel);
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, channel);
+        }
     }
 }
 

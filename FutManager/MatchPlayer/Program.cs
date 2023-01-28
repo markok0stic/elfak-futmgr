@@ -5,16 +5,26 @@ using Shared.Redis;
 using Shared.Redis.Streaming;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder => 
+            policyBuilder
+                .WithOrigins("https://localhost:7044")
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+});
 builder.Services
     .AddHttpContextAccessor()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddSingleton<MatchmakingRequestsChannel>()
-    .AddSingleton<ILiveMessageGenerator,LiveMessageGenerator>()
+    .AddSingleton<ILiveMessageGenerator, LiveMessageGenerator>()
     .AddHostedService<MatchmakingBackgroundService>();
 
 var app = builder.Build();
 
+app.UseCors("AllowSpecificOrigin");
 app.MapGet("/", () => "Hello World!");
 app.MapPost("/startMatch", async (HttpContext context, MatchmakingRequestsChannel channel) =>
 {

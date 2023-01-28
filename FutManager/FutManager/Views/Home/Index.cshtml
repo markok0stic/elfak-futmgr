@@ -38,7 +38,7 @@
         <h1>Matchmaking</h1>
         <p class="drop">Start Practice Simulation</p>
         <div class="startFriendlyMatch displayNone">
-            <button>Start Practice</button>
+            <button onclick="startPractice()">Start Practice</button>
         </div>    
         
         <div>
@@ -47,18 +47,18 @@
                 <input type="datetime-local" id="meeting-time"
                        name="meeting-time"
                        min="2023-01-01T00:00" max="2024-01-01T00:00">
-                <button>Schedule Friendly</button>
+                <button onclick="scheduleFriendly()">Schedule Friendly</button>
             </div>    
         </div>
     </div>
-        <div class="matches">
-            <h1>Currently Live Matches</h1>
-            @{
-                foreach (var liveMatch in Model.LiveMatches)
-                {
-                    <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })">@liveMatch.Channel</a>
-                }
+    <div class="matches">
+        <h1>Currently Live Matches</h1>
+        @{
+            foreach (var liveMatch in Model.LiveMatches)
+            {
+                <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })">@liveMatch.Channel</a>
             }
+        }
     </div>
 </div>
 <script src="scripts/home.js"></script>

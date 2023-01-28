@@ -11,6 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 builder.Services.AddControllersWithViews();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSpecificOrigin",
+        policyBuilder =>
+            policyBuilder
+                .WithOrigins("https://localhost:7044")
+                .AllowAnyHeader()
+                .AllowAnyMethod());
+});
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
@@ -34,10 +43,9 @@ else {
 }
 
 app.UseHttpsRedirection();
- 
 app.UseStaticFiles();
-
 app.UseRouting();
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
