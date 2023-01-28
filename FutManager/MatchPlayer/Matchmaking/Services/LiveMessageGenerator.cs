@@ -30,7 +30,7 @@ namespace MatchPlayer.Matchmaking.Services
             {
                     
                 var liveMessage = new MatchLiveMessage(match);
-                liveMessage.Message = 
+                liveMessage.Message = "Hello World";
                 _logger.LogInformation(liveMessage.Message);
                 if (i == 90)
                 {
