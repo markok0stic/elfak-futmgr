@@ -20,14 +20,14 @@ builder.Services
     .AddSingleton<ISchedulerService, SchedulerService>();
 
 var app = builder.Build();
-app.UseHttpsRedirection();
-app.UseRouting();
-app.UseCors("AllowSpecificOrigin");
-app.MapControllers();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Schedule}/{action=Index}/");
-});
+app
+    .UseHttpsRedirection()
+    .UseRouting()
+    .UseCors("AllowSpecificOrigin")
+    .UseEndpoints(endpoints => 
+    { 
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Schedule}/{action=Index}");
+    });
 app.Run();

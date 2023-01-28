@@ -1,5 +1,4 @@
 ﻿const scheduler = "https://localhost:7044";
-
 var dropDown = document.querySelectorAll(".drop");
 dropDown.forEach(drop => {
     let down = true;
@@ -45,19 +44,25 @@ async function startPractice() {
 }
 
 async function scheduleFriendly() {
+    let now = new Date();
+    let newTime = now.setMinutes(now.getMinutes() + 1);
+    let futureTime = new Date(newTime);
+    console.log(futureTime)
+    const offset = 1;
     const payload = JSON.stringify({
-        "id": 1,
+        "id": 2,
         "homeSquad":{
-            "name":"Brazil"
+            "name":"Squad1"
         },
         "awaySquad":{
-            "name":"Aregentina"
+            "name":"Squad2"
         },
         "scores":[],
-        "result":null
+        "result":null,
+        "timestamp":new Date(futureTime.setHours(futureTime.getHours() + offset))
     });
 
-    await fetch(`${scheduler}/Schedule/StartPractice`, {
+    await fetch(`${scheduler}/Schedule/ScheduleMatch`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
         body: payload

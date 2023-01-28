@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Scheduler.Services;
 using Shared.Models.MatchModels;
@@ -14,25 +16,28 @@ public class ScheduleController: Controller
         _logger = logger;
     }
 
-    [HttpGet]
-    public void Index()
+    [HttpPost]
+    public async Task<IActionResult> StartPractice([FromBody]Match match)
     {
-        
+        await _schedulerService.ScheduleMatch(match);
+        return Ok();
     }
 
     [HttpPost]
     public async Task<IActionResult> ScheduleMatch([FromBody]Match match)
     {
-        await _schedulerService.ScheduleMatch(match);
-        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} is scheduled for: {match.TimeStamp.ToLongDateString()}!");
-        return Ok();
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> StartPractice([FromBody]Match match)
-    {
-        await _schedulerService.ScheduleMatch(match);
-        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} just started!");
+        var delay = match.TimeStamp - DateTime.Now;
+        if (delay.Milliseconds < 0)
+        {
+            return BadRequest();
+        }
+        Task.Run(async () =>
+        {
+            await Task.Delay(delay);
+            await _schedulerService.ScheduleMatch(match);
+        });
+        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} is scheduled for {match.TimeStamp.ToString(CultureInfo.InvariantCulture)}!");
+        await Task.CompletedTask;
         return Ok();
     }
 }

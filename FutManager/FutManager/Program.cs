@@ -42,18 +42,18 @@ else {
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
-app.UseCors("AllowSpecificOrigin");
-app.UseAuthentication();
-app.UseAuthorization();
-app.UseEndpoints(endpoints =>
-{
-    endpoints.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/");
-    endpoints.MapHub<RedisHub>("/redisHub");
-});
-app.MapControllers();
+app
+    .UseHttpsRedirection()
+    .UseStaticFiles()
+    .UseRouting()
+    .UseCors("AllowSpecificOrigin")
+    .UseAuthentication()
+    .UseAuthorization()
+    .UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllerRoute(
+            name: "default",
+            pattern: "{controller=Home}/{action=Index}/");
+        endpoints.MapHub<RedisHub>("/redisHub");
+    });
 app.Run();
