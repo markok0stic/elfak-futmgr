@@ -29,8 +29,8 @@ namespace MatchPlayer.Matchmaking.Services
             while (_matchRunningStatus.TryGetValue(match.Id, out var isRunning) && isRunning && i <= 90)
             {
                     
-                var liveMessage = new MatchLiveMessage();
-                liveMessage.Id = match.Id;
+                var liveMessage = new MatchLiveMessage(match);
+                liveMessage.Message = 
                 _logger.LogInformation(liveMessage.Message);
                 if (i == 90)
                 {
