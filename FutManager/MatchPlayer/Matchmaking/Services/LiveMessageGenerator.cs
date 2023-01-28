@@ -1,6 +1,8 @@
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Shared.Models;
+using Shared.Models.Football_Player_Models;
+using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 
 namespace MatchPlayer.Matchmaking.Services
@@ -26,30 +28,40 @@ namespace MatchPlayer.Matchmaking.Services
         public async IAsyncEnumerable<MatchLiveMessage> StartAsync(Match match)
         {
             _matchRunningStatus[match.Id] = true;
-            var liveMessage = new MatchLiveMessage()
-            {
-                Id = match.Id,
-                AwaySquad = match.AwaySquad,
-                HomeSquad = match.HomeSquad,
-                Card = null,
-                Message = "",
-                Result = null,
-                Score = null,
-                Scores = match.Scores,
-                TimeStamp = match.TimeStamp,
-                Minute = 0
-            };
             var i = 0;
             while (_matchRunningStatus.TryGetValue(match.Id, out var isRunning) && isRunning && i <= 90)
             {
                 i++;
+                var liveMessage = new MatchLiveMessage()
+                {
+                    Id = match.Id,
+                    AwaySquad = match.AwaySquad,
+                    HomeSquad = match.HomeSquad,
+                    Result = null,
+                    Score = null,
+                    Scores = match.Scores,
+                    MatchTime = match.MatchTime,
+                    Minute = i
+                };
+                
+                
+                // those are some custom made random match cases 
                 liveMessage.Message = "Hello World";
-                liveMessage.Minute++;
                 if (i == 90)
                 {
                     liveMessage.Result = "1";
                     _logger.LogInformation("Match ended");
                 }
+
+                if (i == 35)
+                {
+                    liveMessage.Score = new Score()
+                    {
+                        Player = liveMessage.HomeSquad.Players.FirstOrDefault(x => x.ID == 1) ?? new Player() { FirstName = "Dusan", LastName = "Vlahovic" }
+                    };
+                }
+                    
+                
                 _logger.LogInformation(JsonConvert.SerializeObject(liveMessage));
                 yield return liveMessage;
                 await Task.Delay(_messageDelay);

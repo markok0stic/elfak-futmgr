@@ -7,7 +7,6 @@ namespace Shared.Models.MatchModels
     {
         public string Message { get; set; }
         public Score? Score { get; set; }
-        public Card? Card { get; set; }
         public int Minute { get; set; }
     }
 }

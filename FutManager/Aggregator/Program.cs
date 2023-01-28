@@ -1,6 +1,8 @@
 using Aggregator.Listener.Requests;
 using Aggregator.Listener.Services;
 using Newtonsoft.Json;
+using Shared.Neo4j;
+using Shared.Neo4j.DbService;
 using Shared.Redis;
 using Shared.Redis.Streaming;
 
@@ -16,6 +18,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services
     .AddHttpContextAccessor()
+    .AddNeo4J(builder.Configuration)
+    .AddNeo4JDbService()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddSingleton<AggregatorRequestChannel>()

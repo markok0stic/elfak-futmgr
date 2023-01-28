@@ -59,7 +59,7 @@ async function scheduleFriendly() {
         },
         "scores":[],
         "result":null,
-        "timestamp":new Date(futureTime.setHours(futureTime.getHours() + offset))
+        "matchTime":new Date(futureTime.setHours(futureTime.getHours() + offset))
     });
 
     await fetch(`${scheduler}/Schedule/ScheduleMatch`, {

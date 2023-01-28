@@ -1,5 +1,7 @@
 using Scheduler.Scheduler;
 using Scheduler.Scheduler.Services;
+using Shared.Neo4j;
+using Shared.Neo4j.DbService;
 using Shared.RestApiClient;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,8 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod());
 });
 builder.Services
+    .AddNeo4J(builder.Configuration)
+    .AddNeo4JDbService()
     .AddRestApiClient()
     .AddSchedulerOptions(builder.Configuration)
     .AddSingleton<ISchedulerService, SchedulerService>();

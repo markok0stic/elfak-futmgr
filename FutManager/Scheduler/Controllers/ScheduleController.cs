@@ -3,6 +3,7 @@ using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Scheduler.Services;
 using Shared.Models.MatchModels;
+using Shared.Neo4j.DbService;
 
 namespace Scheduler.Controllers;
 
@@ -19,25 +20,30 @@ public class ScheduleController: Controller
     [HttpPost]
     public async Task<IActionResult> StartPractice([FromBody]Match match)
     {
-        await _schedulerService.ScheduleMatch(match);
-        return Ok();
+        IActionResult response = Ok("Match successfully started.");
+        var successfullyStarted = await _schedulerService.ScheduleMatch(match);
+        if (!successfullyStarted)
+        {
+            response = BadRequest("There was an error in starting this match...");
+        }
+        return response;
     }
 
     [HttpPost]
     public async Task<IActionResult> ScheduleMatch([FromBody]Match match)
     {
-        var delay = match.TimeStamp - DateTime.Now;
+        var delay = match.MatchTime - DateTime.Now;
         if (delay.Milliseconds < 0)
         {
-            return BadRequest();
+            return BadRequest("Couldn't schedule match...");
         }
         Task.Run(async () =>
         {
             await Task.Delay(delay);
             await _schedulerService.ScheduleMatch(match);
         });
-        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} is scheduled for {match.TimeStamp.ToString(CultureInfo.InvariantCulture)}!");
+        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} is scheduled for {match.MatchTime.ToString(CultureInfo.InvariantCulture)}!");
         await Task.CompletedTask;
-        return Ok();
+        return Ok("Match successfully scheduled.");
     }
 }
