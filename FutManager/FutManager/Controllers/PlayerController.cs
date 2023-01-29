@@ -20,7 +20,7 @@ namespace FutManager.Controllers
         [HttpPost]
         public async Task<IActionResult> AddPlayer([FromBody] Player player)
         {
-            var query1 = _graphClient.Cypher.Match("(n:Player)").Return<int>("max(n.id)");
+            var query1 = _graphClient.Cypher.Match("(n:Player)").Return<int>("max(n.ID)");
             int maxId = 0;
             try
             {
@@ -36,13 +36,13 @@ namespace FutManager.Controllers
                 string msg = e.Message;
             }
 
-            var query = _graphClient.Cypher.Create("(n:Player{firstname:'" + player.FirstName
-                                                            + "', lastname:'" + player.LastName
-                                                            + "', rating:" + player.OverallRating
-                                                            + ", id:" + (maxId + 1)
-                                                            + ", age:'" + player.Age
-                                                            + "', nationality:'" + player.Nationality
-                                                            + "', position:'" + player.Position + "'})");
+            var query = _graphClient.Cypher.Create("(n:Player{FirstName:'" + player.FirstName
+                                                            + "', LastName:'" + player.LastName
+                                                            + "', OverallRating:" + player.OverallRating
+                                                            + ", ID:" + (maxId + 1)
+                                                            + ", Age:" + player.Age
+                                                            + ", Nationality:'" + player.Nationality
+                                                            + "', Position:'" + player.Position + "'})");
             await query.ExecuteWithoutResultsAsync();
 
             return Ok();
@@ -52,17 +52,17 @@ namespace FutManager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPlayers(int page)
         {
-            int start = 5 * page;
-            int end = start + 5;
+            int skip = 5 * page;            
 
             var query = _graphClient.Cypher.Match("(n:Player)")
-                                         .Where("(n.id>" + start + " and n.id<" + end + ")")
-                                         .Return<Player>("n");
+                                         .Return<Player>("n")
+                                         .Skip(skip)
+                                         .Limit(5);
            
             var result = await query.ResultsAsync;
             List<Player> players = result.ToList();
 
-            return Ok();
+            return View("Views\\Home\\Index.cshtml", players);
         }
 
     }

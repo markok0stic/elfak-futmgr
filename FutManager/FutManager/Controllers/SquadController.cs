@@ -36,9 +36,9 @@ namespace FutManager.Controllers
             {
                 string msg = e.Message;
             }
-            var query = _graphClient.Cypher.Create("(n:Squad{name:'" + name 
-                                                    + "', balance:'" + balance 
-                                                    + "', id: " + (maxId+1)+"})");
+            var query = _graphClient.Cypher.Create("(n:Squad{Name:'" + name 
+                                                    + "', Balance:'" + balance 
+                                                    + "', ID: " + (maxId+1)+"})");
 
             await query.ExecuteWithoutResultsAsync();
 
@@ -49,17 +49,17 @@ namespace FutManager.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSquads(int page)
         {
-            int start = 5 * page;
-            int end = start + 5;
+            int skip = 5 * page;
 
             var query = _graphClient.Cypher.Match("(n:Squad)")
-                                         .Where("(n.id>" + start + " and n.id<" + end + ")")
-                                         .Return<Squad>("n");
+                                         .Return<Squad>("n")
+                                         .Skip(skip)
+                                         .Limit(5); ;
             
             var result = await query.ResultsAsync;
-            List<Squad> players = result.ToList();
+            List<Squad> squads = result.ToList();
 
-            return Ok();
+            return View("Views\\Home\\Index.cshtml", squads);
         }
         //[Route("ChangeName/{name}")]
         //[HttpPost]

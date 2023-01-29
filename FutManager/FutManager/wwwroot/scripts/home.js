@@ -1,4 +1,5 @@
 ﻿const scheduler = "https://localhost:7044";
+const manager = "https://localhost:7042/"
 var dropDown = document.querySelectorAll(".drop");
 dropDown.forEach(drop => {
     let down = true;
@@ -14,6 +15,26 @@ dropDown.forEach(drop => {
             down = !down
         }
     })
+})
+window.addEventListener("load", () => {
+    await fetch(`${manager}/PlayerManager/GetPlayers/${0}`)
+        .then(res => {
+            if (res.ok) {
+                window.location.reload();
+            }
+            else {
+                alert(`Something went wrong!`);
+            }
+        });
+    await fetch(`${manager}/SquadManager/GetSquads/${0}`)
+        .then(res => {
+            if (res.ok) {
+                window.location.reload();
+            }
+            else {
+                alert(`Something went wrong!`);
+            }
+        });
 })
 
 async function startPractice() {

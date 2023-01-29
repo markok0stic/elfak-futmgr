@@ -4,7 +4,7 @@
 }
 
 <div class="main">
-    <div class ="columnFlex">
+    <div class="columnFlex borderLine">
         <h1 class="sqParagraph">Squad Manager</h1>
         <p class="drop">Add Squad</p>
         <div class="addSquad displayNone">
@@ -14,8 +14,19 @@
         </div>
         <p class="drop">Manage Squad</p>
         <div class="manageSquad displayNone">
-            List of squads and buttons to manage squad and delete squad.
-            Manage include: change name, change balance, attach player(buy), detach player(sell)
+            <button>&lt</button>
+            <div class="showList">
+                @foreach (var squad in Model.Squads)
+                {
+                    <div>
+                        <p>@squad.Name</p>
+                        <p>@squad.Balance</p>
+                        <button>Change</button>
+                        <button>Delete</button>
+                    </div>
+                }
+            </div>
+            <button>&gt</button>
         </div>
         <p class="drop">Add Player</p>
         <div class="addPlayer displayNone">
@@ -30,14 +41,27 @@
         </div>
         <p class="drop">Manage Player</p>
         <div class="managePlayer displayNone">
-            List of players and buttons to manage squad and delete player.
-            Manage include: change name, last name, position etc.
+            <button>&lt</button>
+            <div class="showList">
+                @foreach(var player in Model.Players)
+                {
+                    <div>
+                        <p>@player.FirstName</p>
+                        <p>@player.OverallRating</p>
+                        <p>@player.Nationality</p>
+                        <p>@player.Position</p>
+                        <button>Change</button>
+                        <button>Delete</button>
+                    </div>
+                }
+            </div>
+            <button>&gt</button>
         </div>
     </div>
-    <div class="matchmaking columnFlex">
+    <div class="matchmaking columnFlex borderLine">
         <h1>Matchmaking</h1>
         <p class="drop">Start Practice Simulation</p>
-        <div class="startFriendlyMatch displayNone">
+        <div class="startFriendlyMatch displayNone ">
             <button onclick="startPractice()">Start Practice</button>
         </div>    
         
@@ -51,7 +75,7 @@
             </div>    
         </div>
     </div>
-    <div class="matches">
+    <div class="matches borderLine">
         <h1>Currently Live Matches</h1>
         @{
             foreach (var liveMatch in Model.LiveMatches)
