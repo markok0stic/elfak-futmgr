@@ -64,7 +64,7 @@ namespace MatchPlayer.Matchmaking.Services
 
         private async Task StopMatchmakingAsync(int matchId)
         {
-            if (_matchTasks.TryGetValue(matchId, out var matchTask))
+            if (_matchTasks.TryGetValue(matchId, out _))
             {
                 await _liveMessageGenerator.StopAsync(matchId);
                 _matchTasks.TryRemove(matchId, out _);

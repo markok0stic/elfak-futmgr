@@ -42,7 +42,7 @@ public class ScheduleController: Controller
             await Task.Delay(delay);
             await _schedulerService.ScheduleMatch(match);
         });
-        _logger.LogInformation($"Match {match.Id}: {match.HomeSquad.Name} vs {match.AwaySquad.Name} is scheduled for {match.MatchTime.ToString(CultureInfo.InvariantCulture)}!");
+        _logger.LogInformation($"Match {match.Id}: A vs B is scheduled for {match.MatchTime.ToString(CultureInfo.InvariantCulture)}!");
         await Task.CompletedTask;
         return Ok("Match successfully scheduled.");
     }

@@ -38,7 +38,7 @@ namespace FutManager.Controllers
             }
             var query = _graphClient.Cypher.Create("(n:Squad{Name:'" + name 
                                                     + "', Balance:'" + balance 
-                                                    + "', ID: " + (maxId+1)+"})");
+                                                    + "', Id: " + (maxId+1)+"})");
 
             await query.ExecuteWithoutResultsAsync();
 
@@ -59,7 +59,7 @@ namespace FutManager.Controllers
             var result = await query.ResultsAsync;
             List<Squad> squads = result.ToList();
 
-            return View("Views\\Home\\Index.cshtml", squads);
+            return Ok(result);
         }
         //[Route("ChangeName/{name}")]
         //[HttpPost]

@@ -1,4 +1,3 @@
-using Shared.Models;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 using Shared.Models.Squaq;

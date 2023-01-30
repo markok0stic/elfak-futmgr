@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.SignalR;
-using Shared.Models;
 using Shared.Models.MatchModels;
 using Shared.Streaming;
 
@@ -18,16 +17,23 @@ namespace FutManager.Hubs
 
         public async Task StreamMatches(string channel)
         {
-            await StopStreaming(channel);
-            await Groups.AddToGroupAsync(Context.ConnectionId, channel);
-            await _subscriber.SubscribeAsync<MatchLiveMessage>(channel, sub =>
+            try
             {
-                if (sub.Result != null)
+                await StopStreaming(channel);
+                await Groups.AddToGroupAsync(Context.ConnectionId, channel);
+                await _subscriber.SubscribeAsync<MatchLiveMessage>(channel, sub =>
                 {
-                    _subscriber.UnsubscribeAsync(channel);
-                }
-                Clients.Group(channel).SendAsync("ReceiveMessage", sub);
-            });
+                    if (sub.Result != null)
+                    {
+                        _subscriber.UnsubscribeAsync(channel);
+                    }
+                    Clients.Group(channel).SendAsync("ReceiveMessage", sub);
+                });
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,"");
+            }
         }
 
         public async Task StopStreaming(string channel)

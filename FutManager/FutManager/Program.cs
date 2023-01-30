@@ -1,4 +1,3 @@
-using FutManager.Controllers;
 using FutManager.Hubs;
 using FutManager.Services;
 using Shared.Neo4j;
@@ -24,7 +23,6 @@ builder.Services.AddCors(options =>
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
-    .AddNeo4JDbService()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddRedisServer()

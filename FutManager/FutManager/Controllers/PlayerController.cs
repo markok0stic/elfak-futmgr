@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
-using Shared.Models.Football_Player_Models;
 using Shared.Models.FootballPlayer;
 
 namespace FutManager.Controllers
@@ -27,8 +26,7 @@ namespace FutManager.Controllers
                 using (var result = query1.ResultsAsync)
                 {
                     await result;
-                    if (result != null)
-                        maxId = Convert.ToInt32(result.Result.FirstOrDefault());
+                    maxId = Convert.ToInt32(result.Result.FirstOrDefault());
                 }
             }
             catch (Exception e)
@@ -39,7 +37,7 @@ namespace FutManager.Controllers
             var query = _graphClient.Cypher.Create("(n:Player{FirstName:'" + player.FirstName
                                                             + "', LastName:'" + player.LastName
                                                             + "', OverallRating:" + player.OverallRating
-                                                            + ", ID:" + (maxId + 1)
+                                                            + ", Id:" + (maxId + 1)
                                                             + ", Age:" + player.Age
                                                             + ", Nationality:'" + player.Nationality
                                                             + "', Position:'" + player.Position + "'})");
@@ -62,7 +60,8 @@ namespace FutManager.Controllers
             var result = await query.ResultsAsync;
             List<Player> players = result.ToList();
 
-            return View("Views\\Home\\Index.cshtml", players);
+            /*return View("Views\\Home\\Index.cshtml", players);*/
+            return Ok(result);
         }
 
     }

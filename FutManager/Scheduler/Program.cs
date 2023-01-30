@@ -1,5 +1,7 @@
 using Scheduler.Scheduler;
 using Scheduler.Scheduler.Services;
+using Shared.Models.FootballPlayer;
+using Shared.Models.MatchModels;
 using Shared.Neo4j;
 using Shared.Neo4j.DbService;
 using Shared.RestApiClient;
@@ -18,7 +20,8 @@ builder.Services.AddCors(options =>
 });
 builder.Services
     .AddNeo4J(builder.Configuration)
-    .AddNeo4JDbService()
+    .AddNeo4JDbService<Match,Player?>()
+    .AddNeo4JDbService<Player,Match?>()
     .AddRestApiClient()
     .AddSchedulerOptions(builder.Configuration)
     .AddSingleton<ISchedulerService, SchedulerService>();

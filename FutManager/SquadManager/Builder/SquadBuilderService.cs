@@ -1,7 +1,4 @@
-﻿
-
-using Shared.Models.Football_Player_Models;
-using Shared.Models.FootballPlayer;
+﻿using Shared.Models.FootballPlayer;
 
 namespace SquadManager.Builder
 {
@@ -32,7 +29,7 @@ namespace SquadManager.Builder
             {
                 foreach(var p in _squadBuilder.Players)
                 {
-                    if(p.ID == player.ID)
+                    if(p.Id == player.Id)
                     {
                         found = true;
                         break;

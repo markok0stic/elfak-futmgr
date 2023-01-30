@@ -1,7 +1,6 @@
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Shared.Models;
-using Shared.Models.Football_Player_Models;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 
@@ -35,11 +34,8 @@ namespace MatchPlayer.Matchmaking.Services
                 var liveMessage = new MatchLiveMessage()
                 {
                     Id = match.Id,
-                    AwaySquad = match.AwaySquad,
-                    HomeSquad = match.HomeSquad,
                     Result = null,
                     Score = null,
-                    Scores = match.Scores,
                     MatchTime = match.MatchTime,
                     Minute = i
                 };
@@ -55,10 +51,7 @@ namespace MatchPlayer.Matchmaking.Services
 
                 if (i == 35)
                 {
-                    liveMessage.Score = new Score()
-                    {
-                        Player = liveMessage.HomeSquad.Players.FirstOrDefault(x => x.ID == 1) ?? new Player() { FirstName = "Dusan", LastName = "Vlahovic" }
-                    };
+                    liveMessage.Score = new Player() { FirstName = "Dusan", LastName = "Vlahovic" };
                 }
                     
                 
