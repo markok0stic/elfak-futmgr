@@ -1,5 +1,8 @@
 using FutManager.Hubs;
 using FutManager.Services;
+using Shared.Models.FootballPlayer;
+using Shared.Models.MatchModels;
+using Shared.Models.Squaq;
 using Shared.Neo4j;
 using Shared.Neo4j.DbService;
 using Shared.Redis;
@@ -23,6 +26,8 @@ builder.Services.AddCors(options =>
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
+    .AddNeo4JDbService<Player,Squad?>()
+    .AddNeo4JDbService<Squad,Player?>()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddRedisServer()

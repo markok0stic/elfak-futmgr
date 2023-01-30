@@ -16,22 +16,20 @@ dropDown.forEach(drop => {
         }
     })
 })
-window.addEventListener("load", () => {
-    await fetch(`${manager}/PlayerManager/GetPlayers/${0}`)
+window.addEventListener("load", async () => {
+    await fetch(`${manager}/PlayerManager/GetPlayers?&page=${0}`)
         .then(res => {
             if (res.ok) {
                 window.location.reload();
-            }
-            else {
+            } else {
                 alert(`Something went wrong!`);
             }
         });
-    await fetch(`${manager}/SquadManager/GetSquads/${0}`)
+    await fetch(`${manager}/SquadManager/GetSquads?&page=${0}`)
         .then(res => {
             if (res.ok) {
                 window.location.reload();
-            }
-            else {
+            } else {
                 alert(`Something went wrong!`);
             }
         });

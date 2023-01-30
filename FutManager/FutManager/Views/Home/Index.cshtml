@@ -4,7 +4,7 @@
 }
 
 <div class="main">
-    <div class="columnFlex borderLine">
+    @*<div class="columnFlex borderLine">
         <h1 class="sqParagraph">Squad Manager</h1>
         <p class="drop">Add Squad</p>
         <div class="addSquad displayNone">
@@ -13,7 +13,7 @@
             <button>Add</button>
         </div>
         <p class="drop">Manage Squad</p>
-        <div class="manageSquad displayNone">
+        $1$<div class="manageSquad displayNone">
             <button>&lt</button>
             <div class="showList">
                 @foreach (var squad in Model.Squads)
@@ -27,7 +27,7 @@
                 }
             </div>
             <button>&gt</button>
-        </div>
+        </div>#1#
         <p class="drop">Add Player</p>
         <div class="addPlayer displayNone">
             <input placeholder="First name" />
@@ -57,7 +57,7 @@
             </div>
             <button>&gt</button>
         </div>
-    </div>
+    </div>*@
     <div class="matchmaking columnFlex borderLine">
         <h1>Matchmaking</h1>
         <p class="drop">Start Practice Simulation</p>

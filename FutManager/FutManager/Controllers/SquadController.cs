@@ -1,66 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Neo4jClient;
-using Neo4jClient.Cypher;
 using Shared.Models.FootballPlayer;
 using Shared.Models.Squaq;
+using Shared.Neo4j.DbService;
 
 namespace FutManager.Controllers
 {
-    [ApiController]
-    [Route("SquadManager")]
     public class SquadController : Controller
     {
         private readonly IGraphClient _graphClient;
+        private readonly IGraphDbService<Squad, Player?> _graphSquadDbService;
 
-        public SquadController(IGraphClient graphClient)
+        public SquadController(IGraphClient graphClient, IGraphDbService<Squad, Player?> graphSquadDbService)
         {
             _graphClient = graphClient;
+            _graphSquadDbService = graphSquadDbService;
         }
-
-        [Route("AddSquad/{name}/{balance}")]
+        
         [HttpPost]
         public async Task<IActionResult> AddSquad(string name, int balance)
         {
-            var query1 = _graphClient.Cypher.Match("(n:Player)").Return<int>("max(n.id)");
-            int maxId = 0;
+            IActionResult response ;
             try
             {
-                using (var result = query1.ResultsAsync)
+                var squad = new Squad()
                 {
-                    await result;
-                    if (result != null)
-                        maxId = Convert.ToInt32(result.Result.FirstOrDefault());
-                }
+                    Id = await _graphSquadDbService.GetNextId(typeof(Squad).ToString()),
+                    Balance = balance,
+                    Name = name
+                };
+                await _graphSquadDbService.AddNode(squad);
+                response = Ok();
             }
             catch (Exception e)
             {
-                string msg = e.Message;
+                response = UnprocessableEntity(e);
             }
-            var query = _graphClient.Cypher.Create("(n:Squad{Name:'" + name 
-                                                    + "', Balance:'" + balance 
-                                                    + "', Id: " + (maxId+1)+"})");
 
-            await query.ExecuteWithoutResultsAsync();
-
-            return Ok();
+            return response;
         }
 
-        [Route("GetSquads/{page}")]
         [HttpGet]
         public async Task<IActionResult> GetSquads(int page)
         {
-            int skip = 5 * page;
+            IActionResult response;
+            try
+            {
+                response = Ok(await _graphSquadDbService.GetNodes(page));
+            }
+            catch (Exception e)
+            {
+                response = UnprocessableEntity(e);
+            }
 
-            var query = _graphClient.Cypher.Match("(n:Squad)")
-                                         .Return<Squad>("n")
-                                         .Skip(skip)
-                                         .Limit(5); ;
-            
-            var result = await query.ResultsAsync;
-            List<Squad> squads = result.ToList();
-
-            return Ok(result);
+            return response;
         }
+        
         //[Route("ChangeName/{name}")]
         //[HttpPost]
         //public async Task<IActionResult> ChangeName(string name)
