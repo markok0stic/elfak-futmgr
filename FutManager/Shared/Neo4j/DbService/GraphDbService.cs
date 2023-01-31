@@ -29,6 +29,7 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
     
     public async Task AddNode(T node)
     {
+        
         var query = $"(m:{typeof(T).Name} {_customSerializer.RegexSerialize(node)})";
         await _graphClient.Cypher
             .Create(query)

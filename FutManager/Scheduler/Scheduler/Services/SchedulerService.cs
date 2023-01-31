@@ -4,14 +4,13 @@ using Scheduler.Models;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 using Shared.Neo4j.DbService;
-using Shared.Neo4j.Enums;
 using Shared.RestApiClient;
 
 namespace Scheduler.Scheduler.Services;
 
 public interface ISchedulerService
 {
-    Task<bool> ScheduleMatch(Match match);
+    Task ScheduleMatch(Match match);
 }
 
 public class SchedulerService: ISchedulerService
@@ -33,14 +32,11 @@ public class SchedulerService: ISchedulerService
         _graphPlayerDbService = graphPlayerDbService;
     }
     
-    public async Task<bool> ScheduleMatch(Match match)
+    public async Task ScheduleMatch(Match match)
     {
-        var res = await StartMatch(match);
-        if (res)
-        {
-            await _graphMatchDbService.AddNode(match);  
-        }
-        return true;
+        match.Id = await _graphMatchDbService.GetNextId(nameof(Match));
+        await _graphMatchDbService.AddNode(match);
+        await StartMatch(match);
     }
 
     private async Task<bool> StartMatch(Match match)

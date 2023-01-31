@@ -1,5 +1,5 @@
 using Shared.Enums;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 
 namespace Shared.Models.FootballPlayer
 {

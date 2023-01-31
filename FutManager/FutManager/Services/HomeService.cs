@@ -1,5 +1,4 @@
 using Shared.Models.MatchModels;
-using Shared.Models.Squaq;
 using Shared.Redis.Server;
 
 namespace FutManager.Services

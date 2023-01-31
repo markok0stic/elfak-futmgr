@@ -2,7 +2,7 @@ using FutManager.Hubs;
 using FutManager.Services;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 using Shared.Neo4j;
 using Shared.Neo4j.DbService;
 using Shared.Redis;

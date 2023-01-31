@@ -1,6 +1,6 @@
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 
 namespace FutManager.Models.ViewModels
 {

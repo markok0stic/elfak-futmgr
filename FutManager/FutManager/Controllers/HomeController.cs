@@ -3,7 +3,6 @@ using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
-using Shared.Models.Squaq;
 
 namespace FutManager.Controllers
 {
