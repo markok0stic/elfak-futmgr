@@ -11,6 +11,11 @@ public interface IPlayerService
     Task<int> UpdatePlayer(PlayerDto playerDto);
     public Task<int> AddPlayerToSquad(int squadId, int playerId);
 }
+/// <summary>
+/// Implements all methods needed to interact with player.
+/// Player service contains instance of graphDBService which is used to comunicate with data base,
+/// and instance of logger which is used to log errors in console
+/// </summary>
 public class PlayerService : IPlayerService
 {
     private readonly IGraphDbService<PlayerDto, SquadDto> _graphPlayerDbClient;

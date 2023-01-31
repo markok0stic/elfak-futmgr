@@ -5,6 +5,11 @@ using Shared.Serialization.Options;
 
 namespace Shared.Neo4j.DbService;
 
+/// <summary>
+/// Represent generic service for interaction with our graph base.
+/// This service implements all needed methods to interact with graph base.
+/// </summary>
+
 public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
 {
     Task AddNode(T node);

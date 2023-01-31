@@ -10,7 +10,11 @@ public interface ISquadService
     Task<int> DeleteSquad(int id);
     Task<int> UpdateSquad(SquadDto squadDto);
 }
-
+/// <summary>
+/// Implements all methods needed to interact with squads.
+/// Player service contains instance of graphDBService which is used to comunicate with data base,
+/// and instance of logger which is used to log errors in console
+/// </summary>
 public class SquadService : ISquadService
 {
     private readonly IGraphDbService<SquadDto,object?> _graphSquadDbClient;
