@@ -27,7 +27,6 @@ public class SquadService : ISquadService
         {
             var squad = new Squad() 
             {
-                Id = await _graphSquadDbClient.GetNextId(typeof(Squad).ToString()),
                 Balance = balance,
                 Name = name 
             };

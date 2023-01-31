@@ -12,7 +12,6 @@ public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
     Task UpdateNode(T node);
     Task<T?> GetNode(int id);
     Task<IEnumerable<T>> GetNodes(int page);
-    Task<int> GetNextId(string model);
 }
 
 public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where TQ : class?
@@ -29,7 +28,7 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
     
     public async Task AddNode(T node)
     {
-        
+        ((dynamic)node).Id = await GetNextId(node);
         var query = $"(m:{typeof(T).Name} {_customSerializer.RegexSerialize(node)})";
         await _graphClient.Cypher
             .Create(query)
@@ -80,13 +79,13 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
             .ExecuteWithoutResultsAsync();
     }
     
-    public async Task<int> GetNextId(string model)
+    public async Task<int> GetNextId(T model)
     {
         var maxId = 0;
         try
         {
             var data = await _graphClient.Cypher
-                .Match($"(n:{model})")
+                .Match($"(n:{typeof(T).Name})")
                 .Return<int?>("max(n.Id)").ResultsAsync;
             
             maxId = Convert.ToInt32(data.FirstOrDefault());
