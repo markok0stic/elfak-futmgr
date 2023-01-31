@@ -15,25 +15,25 @@
         </div>
         <p class="drop">Manage Squad</p>
         <div class="manageSquad displayNone">
-            <button>&lt</button>
-            <div class="showList">
+            <button id="previousSquads">&lt</button>
+            <div id="shlSquads" class="showList">
                 @{
                     if (Model.Squads != null)
                     {
                         foreach (var squad in Model.Squads)
                         {
                             <div class="borderLine">
-                                <p>@squad.Name</p>
-                                <p>@squad.Balance</p>
+                                <p>Name: @squad.Name</p>
+                                <p>Balance: @squad.Balance</p>
                                 <input id="deleteID" type="hidden" value="@squad.Id"/>
-                                <button>Change</button>
+                                <button id="changeSquad">Change</button>
                                 <button id="deleteSquad">Delete</button>
                             </div>
                         }
                     }
                 }
             </div>
-            <button>&gt</button>
+            <button id="nextSquads">&gt</button>
         </div>
         <p class="drop">Add Player</p>
         <div class="addPlayer displayNone">
@@ -47,7 +47,7 @@
                 @{ 
                     for (int i = 0; i < arr.Length; i++)
                     {
-                        <option value="i">@arr[i]</option>
+                        <option value="@i">@arr[i]</option>
                     }
                 }
             </select>
@@ -63,9 +63,9 @@
                         foreach (var player in Model.Players)
                         {
                             <div class="borderLine">
-                                <p>@player.FirstName</p>
-                                <p>@player.OverallRating</p>
-                                <p>@player.Nationality</p>
+                                <p>Name: @player.FirstName</p>
+                                <p>Rating: @player.OverallRating</p>
+                                <p>Nationality: @player.Nationality</p>
                                 <input id="deleteID" type="hidden" value="@player.Id"/>
                                 <button id="changePlayer">Change</button>
                                 <button id="deletePlayer">Delete</button>
@@ -108,24 +108,63 @@
     </div>
     
     <div class="overlay">
-        <div class="popup">
+        <div id="popupPlayer" class="popup">
             <input type="hidden"/>
-            <input id="changePlayerName" placeholder="First name" />
-            <input id="changePlayerLName" placeholder="Last name" />
-            <input id="changePlayerRating" placeholder="Rating" type="number" min="0" />
-            <input id="changePlayerAge" placeholder="Age" type="number" min="16" />
-            <input id="changePlayerNationality" placeholder="Nationality" />
-            <input id="changePlayerSquad" placeholder="Squad" />
+            <label>First Name:</label>
+            <input id="changePlayerName" />
+            <label>Last Name:</label>
+            <input id="changePlayerLName" />
+            <label>Rating:</label>
+            <input id="changePlayerRating" type="number" />
+            <label>Age:</label>
+            <input id="changePlayerAge" type="number"/>
+            <label>Nationality:</label>
+            <input id="changePlayerNationality" />
+            <label>Squad:</label>
+            <input id="changePlayerSquad" />
+            <label>Position:</label>
             <select id="changePlayerPosition">
                 @{
                     for (int i = 0; i < arr.Length; i++)
                     {
-                        <option value="i">@arr[i]</option>
+                        <option value="@i">@arr[i]</option>
                     }
                 }
             </select>
-            <button>Confirm</button>
-            <button id="cancelBtn">Cancel</button>
+            <button id="updatePlayer">Confirm</button>
+            <button id="cancelBtnPlayers">Cancel</button>
+        </div>
+        <div id="popupSquad" class="popup">
+            <input type="hidden" />
+            <label>Name:</label>
+            <input id="changeSquadName" />
+            <label>Balance:</label>
+            <input id="changeSquadBalance" type="number" />
+            <p class="drop">Add Player To Squad</p>
+            <div class="managePlayer displayNone">
+                <button id="previousPlayers">&lt</button>
+                <div id="shlPlayers" class="showList">
+                    @{
+                        if (Model.Players != null)
+                        {
+                            foreach (var player in Model.Players)
+                            {
+                                <div class="borderLine">
+                                    <p>Name: @player.FirstName</p>
+                                    <p>Rating: @player.OverallRating</p>
+                                    <p>Nationality: @player.Nationality</p>
+                                    <input id="addID" type="hidden" value="@player.Id" />
+                                    <button id="addPlayer">Add</button>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <button id="nextPlayers">&gt</button>
+            </div>
+
+            <button id="updateSquad">Confirm</button>
+            <button id="cancelBtnSquads">Cancel</button>
         </div>
     </div>
 

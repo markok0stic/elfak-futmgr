@@ -12,6 +12,7 @@ public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
     Task UpdateNode(T node);
     Task<T?> GetNode(int id);
     Task<IEnumerable<T>> GetNodes(int page);
+    Task DeleteNode(int id);
 }
 
 public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where TQ : class?
@@ -96,5 +97,13 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
         }
 
         return ++maxId;
+    }
+
+    public async Task DeleteNode(int id)
+    {
+        await _graphClient.Cypher
+            .Match($"(n:{typeof(T).Name}{{Id: {id}}})")
+            .DetachDelete("n")
+            .ExecuteWithoutResultsAsync();
     }
 }
