@@ -1,8 +1,9 @@
 using Aggregator.Listener.Requests;
 using Newtonsoft.Json;
-using Shared.Models.FootballPlayer;
+using Shared.Models.DtoModels;
 using Shared.Models.MatchModels;
 using Shared.Neo4j.DbService;
+using Shared.Neo4j.Enums;
 using Shared.Streaming;
 
 namespace Aggregator.Listener.Services
@@ -11,15 +12,17 @@ namespace Aggregator.Listener.Services
     {
         private readonly IStreamSubscriber _subscriber;
         private readonly AggregatorRequestChannel _aggregatorRequest;
-        private readonly IGraphDbService<Match,Player> _graphDbService;
+        private readonly IGraphDbService<PlayerDto,MatchDto> _graphPlayerDbService;
+        private readonly IGraphDbService<MatchDto,object?> _graphMatchDbService;
         private readonly ILogger<AggregatorWorker> _logger;
 
-        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<Match, Player> graphDbService, ILogger<AggregatorWorker> logger)
+        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<PlayerDto, MatchDto> graphPlayerDbService, ILogger<AggregatorWorker> logger, IGraphDbService<MatchDto, object?> graphMatchDbService)
         {
             _subscriber = subscriber;
             _aggregatorRequest = aggregatorRequest;
-            _graphDbService = graphDbService;
+            _graphPlayerDbService = graphPlayerDbService;
             _logger = logger;
+            _graphMatchDbService = graphMatchDbService;
         }
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
@@ -44,14 +47,19 @@ namespace Aggregator.Listener.Services
                 if (sub.Result != null)
                 {
                     // persist result
-                    
+                    await _graphMatchDbService.UpdateNode(new MatchDto(sub));
                     // stop "listening" to match
                     await StopAggregationAsync(requestMatchId);
                 }
 
-                // we can implement here persists of cards or scores
-                _logger.LogInformation(JsonConvert.SerializeObject(sub));
+                if (sub.Score != null)
+                {
+                    // persist score
+                    await _graphPlayerDbService.AddRelationship(sub.Score.Id,sub.Id, RelationshipTypes.SCORED_GOAL);
+                }
                 
+                // we can implement here persists of cards etc...
+                _logger.LogInformation(JsonConvert.SerializeObject(sub));
             });
         }
         

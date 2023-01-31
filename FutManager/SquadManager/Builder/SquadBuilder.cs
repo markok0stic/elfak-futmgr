@@ -1,5 +1,5 @@
 ﻿using Shared.Models.FootballPlayer;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 
 namespace SquadManager.Builder
 {

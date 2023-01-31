@@ -1,7 +1,7 @@
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Shared.Models;
-using Shared.Models.FootballPlayer;
+using Shared.Models.DtoModels;
 using Shared.Models.MatchModels;
 
 namespace MatchPlayer.Matchmaking.Services
@@ -37,7 +37,9 @@ namespace MatchPlayer.Matchmaking.Services
                     Result = null,
                     Score = null,
                     MatchTime = match.MatchTime,
-                    Minute = i
+                    Minute = i,
+                    HomeSquadDto = match.HomeSquadDto,
+                    AwaySquadDto = match.AwaySquadDto
                 };
                 
                 
@@ -45,13 +47,18 @@ namespace MatchPlayer.Matchmaking.Services
                 liveMessage.Message = "Hello World";
                 if (i == 90)
                 {
-                    liveMessage.Result = "1";
+                    liveMessage.Result = "x";
                     _logger.LogInformation("Match ended");
                 }
 
                 if (i == 35)
                 {
-                    liveMessage.Score = new Player() { FirstName = "Dusan", LastName = "Vlahovic" };
+                    liveMessage.Score = new PlayerDto() { FirstName = "Dusan", LastName = "Vlahovic" };
+                }
+                
+                if (i == 40)
+                {
+                    liveMessage.Score = new PlayerDto() { FirstName = "Dusan", LastName = "Vlahovic" };
                 }
                     
                 

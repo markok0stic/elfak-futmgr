@@ -1,7 +1,8 @@
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Scheduler.Models;
-using Shared.Models.FootballPlayer;
+using Shared.Models;
+using Shared.Models.DtoModels;
 using Shared.Models.MatchModels;
 using Shared.Neo4j.DbService;
 using Shared.Neo4j.Enums;
@@ -11,7 +12,7 @@ namespace Scheduler.Scheduler.Services;
 
 public interface ISchedulerService
 {
-    Task<bool> ScheduleMatch(Match match);
+    Task ScheduleMatch(Match matchDto);
 }
 
 public class SchedulerService: ISchedulerService
@@ -19,28 +20,28 @@ public class SchedulerService: ISchedulerService
     private readonly IApiClient _apiClient;
     private readonly string _matchPlayerBaseUrl;
     private readonly string _aggregatorBaseUrl;
-    private readonly IGraphDbService<Match,Player?> _graphMatchDbService;
-    private readonly IGraphDbService<Player,Match?> _graphPlayerDbService;
+    private readonly IGraphDbService<MatchDto,SquadDto> _graphMatchDbService;
     private readonly ILogger<SchedulerService> _logger;
 
-    public SchedulerService(IApiClient apiClient, IOptions<SchedulerOptions> options, ILogger<SchedulerService> logger, IGraphDbService<Match, Player?> graphMatchDbService, IGraphDbService<Player, Match?> graphPlayerDbService)
+    public SchedulerService(IApiClient apiClient, IOptions<SchedulerOptions> options, 
+        IGraphDbService<MatchDto, SquadDto> graphMatchDbService, ILogger<SchedulerService> logger)
     {
         _apiClient = apiClient;
         _matchPlayerBaseUrl = options.Value.MatchPlayerBaseUrl;
         _aggregatorBaseUrl = options.Value.AggregatorBaseUrl;
         _logger = logger;
         _graphMatchDbService = graphMatchDbService;
-        _graphPlayerDbService = graphPlayerDbService;
     }
     
-    public async Task<bool> ScheduleMatch(Match match)
+    public async Task ScheduleMatch(Match match)
     {
-        var res = await StartMatch(match);
-        if (res)
-        {
-            await _graphMatchDbService.AddNode(match);  
-        }
-        return true;
+        match.MatchTime = DateTime.Now;
+        var matchDto = new MatchDto(match);
+        await _graphMatchDbService.AddNode(matchDto);
+        await _graphMatchDbService.AddRelationship(matchDto.Id, match.HomeSquadDto.Id, RelationshipTypes.HOME);
+        await _graphMatchDbService.AddRelationship(matchDto.Id, match.AwaySquadDto.Id, RelationshipTypes.AWAY);
+        match.Id = matchDto.Id;
+        await StartMatch(match);
     }
 
     private async Task<bool> StartMatch(Match match)

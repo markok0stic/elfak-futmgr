@@ -1,32 +1,30 @@
-using Shared.Models.FootballPlayer;
-using Shared.Models.Squaq;
+using Shared.Models.DtoModels;
 using Shared.Neo4j.DbService;
-using System.Numerics;
 
 namespace FutManager.Services;
 public interface IPlayerService
 {
-    Task<IEnumerable<Player>?> GetPlayersForPage(int page);
-    Task<int> AddPlayer(Player player);
+    Task<IEnumerable<PlayerDto>?> GetPlayersForPage(int page);
+    Task<int> AddPlayer(PlayerDto playerDto);
     Task<int> DeletePlayer(int id);
-    Task<Player?> GetPlayer(int id);
-    Task<int> UpdatePlayer(Player player);
-    public Task<int> AddPlayerToSquad(int SquadId, int PlayerId);
+    Task<PlayerDto?> GetPlayer(int id);
+    Task<int> UpdatePlayer(PlayerDto playerDto);
+    public Task<int> AddPlayerToSquad(int squadId, int playerId);
 }
 public class PlayerService : IPlayerService
 {
-    private readonly IGraphDbService<Player, Squad> _graphPlayerDbClient;
+    private readonly IGraphDbService<PlayerDto, SquadDto> _graphPlayerDbClient;
     private readonly ILogger<PlayerService> _logger;
 
-    public PlayerService(IGraphDbService<Player, Squad> graphPlayerDbClient, ILogger<PlayerService> logger)
+    public PlayerService(IGraphDbService<PlayerDto, SquadDto> graphPlayerDbClient, ILogger<PlayerService> logger)
     {
         _graphPlayerDbClient = graphPlayerDbClient;
         _logger = logger;
     }
     
-    public async Task<IEnumerable<Player>?> GetPlayersForPage(int page)
+    public async Task<IEnumerable<PlayerDto>?> GetPlayersForPage(int page)
     {
-        IEnumerable<Player>? players = null;
+        IEnumerable<PlayerDto>? players = null;
         try
         {
             players = await _graphPlayerDbClient.GetNodes(page);
@@ -38,11 +36,11 @@ public class PlayerService : IPlayerService
         return players;
     }
     
-    public async Task<int> AddPlayer(Player player)
+    public async Task<int> AddPlayer(PlayerDto playerDto)
     {
         try
         {
-            await _graphPlayerDbClient.AddNode(player);
+            await _graphPlayerDbClient.AddNode(playerDto);
         }
         catch (Exception e)
         {
@@ -64,9 +62,9 @@ public class PlayerService : IPlayerService
         return StatusCodes.Status200OK;
     }
 
-    public async Task<Player?> GetPlayer(int id)
+    public async Task<PlayerDto?> GetPlayer(int id)
     {
-        Player? player = null;
+        PlayerDto? player = null;
         try
         {
             player = await _graphPlayerDbClient.GetNode(id);
@@ -78,11 +76,11 @@ public class PlayerService : IPlayerService
         return player;
     }
 
-    public async Task<int> UpdatePlayer(Player player)
+    public async Task<int> UpdatePlayer(PlayerDto playerDto)
     {
         try
         {
-            await _graphPlayerDbClient.UpdateNode(player);
+            await _graphPlayerDbClient.UpdateNode(playerDto);
         }
         catch (Exception e)
         {
@@ -91,19 +89,11 @@ public class PlayerService : IPlayerService
         return StatusCodes.Status200OK;
     }
 
-    public async Task<int> AddPlayerToSquad(int SquadId, int PlayerId)
+    public async Task<int> AddPlayerToSquad(int squadId, int playerId)
     {
-        var squad = new Squad()
-        {
-            Id = SquadId,
-        };
-        var player = new Player()
-        {
-            Id = PlayerId
-        };
         try
         {
-            await _graphPlayerDbClient.MakeRelationship(player, squad, Shared.Neo4j.Enums.RelationshipTypes.PLAYES_FOR);
+            await _graphPlayerDbClient.AddRelationship(playerId, squadId, Shared.Neo4j.Enums.RelationshipTypes.PLAYES_FOR);
         }
         catch (Exception e)
         {

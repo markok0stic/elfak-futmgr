@@ -2,6 +2,7 @@ using Shared.Streaming;
 using System.Collections.Concurrent;
 using MatchPlayer.Matchmaking.Requests;
 using Shared.Models;
+using Shared.Models.DtoModels;
 using Shared.Models.MatchModels;
 
 namespace MatchPlayer.Matchmaking.Services

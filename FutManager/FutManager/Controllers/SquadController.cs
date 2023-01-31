@@ -1,7 +1,6 @@
 ﻿using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models.FootballPlayer;
-using Shared.Models.Squaq;
+using Shared.Models.DtoModels;
 
 namespace FutManager.Controllers
 {
@@ -41,9 +40,9 @@ namespace FutManager.Controllers
 
         [Route("UpdateSquad")]
         [HttpPut]
-        public async Task<IActionResult> UpdateSquad([FromBody]Squad squad)
+        public async Task<IActionResult> UpdateSquad([FromBody]SquadDto squadDto)
         {
-            int response = await _squadService.UpdateSquad(squad);
+            int response = await _squadService.UpdateSquad(squadDto);
             return StatusCode(response);
         }
     }

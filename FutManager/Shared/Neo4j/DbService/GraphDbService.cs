@@ -8,10 +8,11 @@ namespace Shared.Neo4j.DbService;
 public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
 {
     Task AddNode(T node);
-    Task MakeRelationship(T startingNode, TQ destinationNode, RelationshipTypes type);
+    Task AddRelationship(int startingNodeId, int destinationNodeId, RelationshipTypes type);
     Task UpdateNode(T node);
     Task<T?> GetNode(int id);
     Task<IEnumerable<T>> GetNodes(int page);
+    Task DeleteRelationship(int startingNodeId, int destinationNodeId, RelationshipTypes type);
     Task DeleteNode(int id);
 }
 
@@ -29,7 +30,7 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
     
     public async Task AddNode(T node)
     {
-        ((dynamic)node).Id = await GetNextId(node);
+        ((dynamic)node).Id = await GetNextId();
         var query = $"(m:{typeof(T).Name} {_customSerializer.RegexSerialize(node)})";
         await _graphClient.Cypher
             .Create(query)
@@ -69,18 +70,32 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
             .ResultsAsync;
     }
     
-    public async Task MakeRelationship(T startingNode, TQ destinationNode, RelationshipTypes type)
+    public async Task AddRelationship(int startingNodeId, int destinationNodeId, RelationshipTypes type)
     {
-        if(destinationNode == null)
-            return;
         await _graphClient.Cypher
             .Match($"(x:{typeof(T).Name}), (y:{typeof(TQ).Name})")
-            .Where($"x.Id = {((dynamic)startingNode).Id} AND y.Id = {((dynamic)destinationNode).Id}")
+            .Where($"x.Id = {startingNodeId} AND y.Id = {destinationNodeId}")
             .Create($"(x)-[:{type.ToString()}]->(y)")
             .ExecuteWithoutResultsAsync();
     }
     
-    public async Task<int> GetNextId(T model)
+    public async Task DeleteRelationship(int startingNodeId, int destinationNodeId, RelationshipTypes type)
+    {
+        await _graphClient.Cypher
+            .Match($"(x:{typeof(T).Name} {{Id:{startingNodeId}}})-[r:{type.ToString()}]->(y:{typeof(TQ).Name} {{Id:{destinationNodeId}}})")
+            .Delete("r")
+            .ExecuteWithoutResultsAsync();
+    }
+
+    public async Task DeleteNode(int id)
+    {
+        await _graphClient.Cypher
+            .Match($"(n:{typeof(T).Name}{{Id: {id}}})")
+            .DetachDelete("n")
+            .ExecuteWithoutResultsAsync();
+    }
+    
+    private async Task<int> GetNextId()
     {
         var maxId = 0;
         try
@@ -97,13 +112,5 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
         }
 
         return ++maxId;
-    }
-
-    public async Task DeleteNode(int id)
-    {
-        await _graphClient.Cypher
-            .Match($"(n:{typeof(T).Name}{{Id: {id}}})")
-            .DetachDelete("n")
-            .ExecuteWithoutResultsAsync();
     }
 }
