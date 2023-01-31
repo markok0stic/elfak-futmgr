@@ -9,6 +9,23 @@ namespace FutManager.Models.ViewModels
         public List<CurrentlyLiveMatch> LiveMatches { get; set; }
         public List<Player> Players { get; set; }
         public List<Squad> Squads { get; set; }
+
+        private static readonly object _lock = new object();
+        private static HomeViewModel instance = null;
+        public static HomeViewModel Instance
+        {
+            get
+            {
+                lock (_lock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new HomeViewModel();
+                    }
+                    return instance;
+                }
+            }
+        }
     }
 }
 

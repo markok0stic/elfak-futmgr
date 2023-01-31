@@ -4,6 +4,10 @@ input
 {
     width:30%
 }
+select, option
+{
+    width:30%
+}
 button
 {
     width:20%;

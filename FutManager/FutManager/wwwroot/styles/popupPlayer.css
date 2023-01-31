@@ -1,0 +1,49 @@
+﻿.popup {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 25%;
+    z-index: 200;
+    max-width: 600px;
+    padding: 30px;
+    margin: auto;
+    background-color: #fff;
+    border-radius: 30px;
+}
+
+#closePopup {
+    font-size: 26px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    background-color: transparent;
+    font-weight: bold;
+    border: 0;
+}
+
+#closePopup2 {
+    font-size: 26px;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 33px;
+    background-color: transparent;
+    font-weight: bold;
+    border: 0;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: rgba(0, 0, 0, 0.5);
+}

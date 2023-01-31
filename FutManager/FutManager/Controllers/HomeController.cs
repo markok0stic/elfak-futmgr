@@ -15,8 +15,10 @@ namespace FutManager.Controllers
 
         public async Task<ViewResult> Index()
         {
-            var model = new HomeViewModel();
+            var model = HomeViewModel.Instance;
             model.LiveMatches = await _homeService.GetAllActiveMatches();
+            model.Players = await _homeService.GetPlayersForPage(0);
+            model.Squads = await _homeService.GetSquadsForPage(0);
 
             ViewData["Title"] = "Home";
             return View(model);

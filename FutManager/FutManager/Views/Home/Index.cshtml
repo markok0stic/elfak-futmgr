@@ -1,63 +1,75 @@
 @model FutManager.Models.ViewModels.HomeViewModel
 @{
     Layout = "../Shared/_Layout.cshtml";
+    var arr = Shared.Enums.FieldPositions.GetNames(typeof(Shared.Enums.FieldPositions));
 }
 
 <div class="main">
-    @*<div class="columnFlex borderLine">
+    <div class="columnFlex borderLine">
         <h1 class="sqParagraph">Squad Manager</h1>
         <p class="drop">Add Squad</p>
         <div class="addSquad displayNone">
-            <input placeholder="Name"/>
-            <input placeholder="Balance" type="number" min="0"/>
-            <button>Add</button>
+            <input id="squadName" placeholder="Name"/>
+            <input id="squadBalance" placeholder="Balance" type="number" min="0"/>
+            <button id="squadAdd">Add</button>
         </div>
         <p class="drop">Manage Squad</p>
-        $1$<div class="manageSquad displayNone">
+        <div class="manageSquad displayNone">
             <button>&lt</button>
             <div class="showList">
                 @foreach (var squad in Model.Squads)
                 {
-                    <div>
-                        <p>@squad.Name</p>
-                        <p>@squad.Balance</p>
-                        <button>Change</button>
-                        <button>Delete</button>
-                    </div>
+                        <div class="borderLine">
+                            <p>@squad.Name</p>
+                            <p>@squad.Balance</p>
+                            <input id="deleteID" type="hidden" value="@squad.ID" />
+                            <button>Change</button>
+                            <button id="deleteSquad">Delete</button>
+                        </div>
+                    }
                 }
             </div>
             <button>&gt</button>
-        </div>#1#
+        </div>
         <p class="drop">Add Player</p>
         <div class="addPlayer displayNone">
-            <input placeholder="First name" />
-            <input placeholder="Last name" />
-            <input placeholder="Rating" type="number" min="0" />
-            <input placeholder="Age" type="number" min="16" />
-            <input placeholder="Nationality" />
-            <input placeholder="Squad" />
-            <input placeholder="Position" />
-            <button>Add</button>
+            <input id="playerName" placeholder="First name" />
+            <input id="playerLName" placeholder="Last name" />
+            <input id="playerRating" placeholder="Rating" type="number" min="0" />
+            <input id="playerAge" placeholder="Age" type="number" min="16" />
+            <input id="playerNationality" placeholder="Nationality" />
+            <input id="playerSquad" placeholder="Squad" />
+            <select id="playerPosition">
+                @{ 
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        <option value="i">@arr[i]</option>
+                    }
+                }
+            </select>
+            <button id="playerAdd">Add</button>
         </div>
         <p class="drop">Manage Player</p>
         <div class="managePlayer displayNone">
-            <button>&lt</button>
-            <div class="showList">
-                @foreach(var player in Model.Players)
+            <button id="previousPlayers">&lt</button>
+            <div id="shlPlayers" class="showList">
+            @{
+                foreach (var player in Model.Players)
                 {
-                    <div>
+                    <div class="borderLine">
                         <p>@player.FirstName</p>
                         <p>@player.OverallRating</p>
                         <p>@player.Nationality</p>
-                        <p>@player.Position</p>
-                        <button>Change</button>
-                        <button>Delete</button>
+                        <input id="deleteID" type="hidden" value="@player.ID" />
+                        <button id="changePlayer">Change</button>
+                        <button id="deletePlayer">Delete</button>
                     </div>
                 }
+                }
             </div>
-            <button>&gt</button>
+            <button id="nextPlayers">&gt</button>
         </div>
-    </div>*@
+    </div>
     <div class="matchmaking columnFlex borderLine">
         <h1>Matchmaking</h1>
         <p class="drop">Start Practice Simulation</p>
@@ -84,5 +96,28 @@
             }
         }
     </div>
+    
+    <div class="overlay">
+        <div class="popup">
+            <input type="hidden"/>
+            <input id="changePlayerName" placeholder="First name" />
+            <input id="changePlayerLName" placeholder="Last name" />
+            <input id="changePlayerRating" placeholder="Rating" type="number" min="0" />
+            <input id="changePlayerAge" placeholder="Age" type="number" min="16" />
+            <input id="changePlayerNationality" placeholder="Nationality" />
+            <input id="changePlayerSquad" placeholder="Squad" />
+            <select id="changePlayerPosition">
+                @{
+                    for (int i = 0; i < arr.Length; i++)
+                    {
+                        <option value="i">@arr[i]</option>
+                    }
+                }
+            </select>
+            <button>Confirm</button>
+            <button id="cancelBtn">Cancel</button>
+        </div>
+    </div>
+
 </div>
 <script src="scripts/home.js"></script>
