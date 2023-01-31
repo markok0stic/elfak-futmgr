@@ -48,11 +48,16 @@ namespace MatchPlayer.Matchmaking.Services
                 liveMessage.Message = "Hello World";
                 if (i == 90)
                 {
-                    liveMessage.Result = "1";
+                    liveMessage.Result = "x";
                     _logger.LogInformation("Match ended");
                 }
 
                 if (i == 35)
+                {
+                    liveMessage.Score = new Player() { FirstName = "Dusan", LastName = "Vlahovic" };
+                }
+                
+                if (i == 40)
                 {
                     liveMessage.Score = new Player() { FirstName = "Dusan", LastName = "Vlahovic" };
                 }

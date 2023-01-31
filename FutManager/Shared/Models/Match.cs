@@ -8,4 +8,5 @@ public class Match
     public Squad HomeSquad { get; set; }
     public Squad AwaySquad { get; set; }
     public DateTime MatchTime { get; set; }
+    public string? Result { get; set; }
 }

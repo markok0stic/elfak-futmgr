@@ -295,9 +295,11 @@ async function startPractice() {
     const payload = JSON.stringify({
     "id": 1,
     "homeSquad":{
+        "id":1,
         "name":"Brazil"
     },
     "awaySquad":{
+        "id":2,
         "name":"Aregentina"  
     },
     "scores":[],
@@ -327,12 +329,13 @@ async function scheduleFriendly() {
     const payload = JSON.stringify({
         "id": 2,
         "homeSquad":{
+            "id":1,
             "name":"Squad1"
         },
         "awaySquad":{
+            "id":2,
             "name":"Squad2"
         },
-        "scores":[],
         "result":null,
         "matchTime":new Date(futureTime.setHours(futureTime.getHours() + offset))
     });

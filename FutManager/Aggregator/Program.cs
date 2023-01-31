@@ -3,7 +3,6 @@ using Aggregator.Listener.Services;
 using Newtonsoft.Json;
 using Shared.Models.DtoModels;
 using Shared.Models.FootballPlayer;
-using Shared.Models.MatchModels;
 using Shared.Neo4j;
 using Shared.Neo4j.DbService;
 using Shared.Redis;
@@ -22,7 +21,8 @@ builder.Services.AddCors(options =>
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
-    .AddNeo4JDbService<MatchDto,Player?>()
+    .AddNeo4JDbService<Player,MatchDto>()
+    .AddNeo4JDbService<MatchDto,object?>()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddSingleton<AggregatorRequestChannel>()

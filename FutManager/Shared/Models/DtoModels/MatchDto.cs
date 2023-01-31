@@ -6,10 +6,11 @@ namespace Shared.Models.DtoModels
         public string? Result { get; set; }
         public DateTime MatchTime { get; set; }
 
+        public MatchDto(){}
         public MatchDto(Match m)
         {
             Id = m.Id;
-            Result = null;
+            Result = m.Result;
             MatchTime = m.MatchTime;
         }
     }
