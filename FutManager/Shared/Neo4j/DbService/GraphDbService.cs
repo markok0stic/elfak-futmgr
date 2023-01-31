@@ -1,6 +1,7 @@
 using Neo4jClient;
 using Shared.Neo4j.Enums;
 using Shared.Serialization;
+using Shared.Serialization.Options;
 
 namespace Shared.Neo4j.DbService;
 
@@ -8,6 +9,7 @@ public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
 {
     Task AddNode(T node);
     Task MakeRelationship(T startingNode, TQ destinationNode, RelationshipTypes type);
+    Task UpdateNode(T node);
     Task<T?> GetNode(int id);
     Task<IEnumerable<T>> GetNodes(int page);
     Task<int> GetNextId(string model);
@@ -30,6 +32,20 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
         var query = $"(m:{typeof(T).Name} {_customSerializer.RegexSerialize(node)})";
         await _graphClient.Cypher
             .Create(query)
+            .ExecuteWithoutResultsAsync();
+    }
+
+    public async Task UpdateNode(T node)
+    {
+        await _graphClient.Cypher
+            .Match($"(x:{typeof(T).Name} {{Id: {((dynamic)node).Id}}}) ")
+            .Set(_customSerializer.RegexSerialize(node,
+                new CustomJsonSerializerOptions() 
+                {
+                    UseEqualAndPrefixForNode = true,
+                    RemoveCurlyBrackets = true
+                })
+            )
             .ExecuteWithoutResultsAsync();
     }
 
