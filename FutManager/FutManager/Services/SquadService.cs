@@ -1,3 +1,4 @@
+using Shared.Models.FootballPlayer;
 using Shared.Models.Squaq;
 using Shared.Neo4j.DbService;
 
@@ -8,6 +9,7 @@ public interface ISquadService
     Task<IEnumerable<Squad>?> GetSquadsForPage(int page);
     Task<int> AddSquad(string name, int balance);
     Task<int> DeleteSquad(int id);
+    Task<int> UpdateSquad(Squad squad);
 }
 
 public class SquadService : ISquadService
@@ -20,7 +22,7 @@ public class SquadService : ISquadService
         _graphSquadDbClient = graphSquadDbClient;
         _logger = logger;
     }
-    
+
     public async Task<int> AddSquad(string name, int balance)
     {
         try
@@ -43,7 +45,7 @@ public class SquadService : ISquadService
     { 
         try
         {
-            //await _graphPlayerDbClient.DeleteSquad(id);
+            await _graphSquadDbClient.DeleteNode(id);
         }
         catch (Exception e)
         {
@@ -64,5 +66,18 @@ public class SquadService : ISquadService
             _logger.LogError(e, "");
         }
         return squads;
+    }
+
+    public async Task<int> UpdateSquad(Squad squad)
+    {
+        try
+        {
+            await _graphSquadDbClient.UpdateNode(squad);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "");
+        }
+        return StatusCodes.Status200OK;
     }
 }

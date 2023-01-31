@@ -1,5 +1,7 @@
 using Shared.Models.FootballPlayer;
+using Shared.Models.Squaq;
 using Shared.Neo4j.DbService;
+using System.Numerics;
 
 namespace FutManager.Services;
 public interface IPlayerService
@@ -7,6 +9,9 @@ public interface IPlayerService
     Task<IEnumerable<Player>?> GetPlayersForPage(int page);
     Task<int> AddPlayer(Player player);
     Task<int> DeletePlayer(int id);
+    Task<Player?> GetPlayer(int id);
+    Task<int> UpdatePlayer(Player player);
+    public Task<int> AddPlayerToSquad(int SquadId, int PlayerId);
 }
 public class PlayerService : IPlayerService
 {
@@ -50,7 +55,7 @@ public class PlayerService : IPlayerService
     {
         try
         {
-            //await _graphPlayerDbClient.DeletePlayer(id);
+            await _graphPlayerDbClient.DeleteNode(id);
         }
         catch (Exception e)
         {
@@ -58,5 +63,52 @@ public class PlayerService : IPlayerService
         }
         return StatusCodes.Status200OK;
     }
-    
+
+    public async Task<Player?> GetPlayer(int id)
+    {
+        Player? player = null;
+        try
+        {
+            player = await _graphPlayerDbClient.GetNode(id);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "");
+        }
+        return player;
+    }
+
+    public async Task<int> UpdatePlayer(Player player)
+    {
+        try
+        {
+            await _graphPlayerDbClient.UpdateNode(player);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "");
+        }
+        return StatusCodes.Status200OK;
+    }
+
+    public async Task<int> AddPlayerToSquad(int SquadId, int PlayerId)
+    {
+        var squad = new Squad()
+        {
+            Id = SquadId,
+        };
+        var player = new Player()
+        {
+            Id = PlayerId
+        };
+        try
+        {
+            await _graphPlayerDbClient.MakeRelationship(player, squad, Shared.Neo4j.Enums.RelationshipTypes.PLAYES_FOR);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "");
+        }
+        return StatusCodes.Status200OK;
+    }
 }
