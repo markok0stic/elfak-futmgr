@@ -4,6 +4,9 @@ using Shared.Streaming;
 
 namespace FutManager.Hubs
 {
+    /// <summary>
+    /// Hub used to stream data using socket communication for client-serving match live messages of desired match
+    /// </summary>
     internal sealed class RedisHub : Hub
     {
         private readonly IStreamSubscriber _subscriber;

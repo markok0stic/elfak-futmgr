@@ -3,6 +3,9 @@ using Shared.Streaming;
 
 namespace Shared.Redis.Streaming;
 
+/// <summary>
+/// Every extension method is used to inject exact dependencies for it
+/// </summary>
 public static class Extension
 {
     public static IServiceCollection AddRedisStreaming(this IServiceCollection services)

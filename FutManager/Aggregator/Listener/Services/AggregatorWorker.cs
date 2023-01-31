@@ -24,6 +24,12 @@ namespace Aggregator.Listener.Services
             _logger = logger;
             _graphMatchDbService = graphMatchDbService;
         }
+        
+        /// <summary>
+        /// Default method of Background Worker that listens to channel of request in order to start aggregating
+        /// data for specified channel
+        /// </summary>
+        /// <param name="stoppingToken"></param>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Aggregator background service has started...");
@@ -38,6 +44,10 @@ namespace Aggregator.Listener.Services
             _logger.LogInformation("Aggregator background service has stopped.");
         }
 
+        /// <summary>
+        /// This method is used to aggregate data that is published into specified redis channel
+        /// </summary>
+        /// <param name="requestMatchId"></param>
         private Task StartAggregationAsync(int requestMatchId)
         {
             return _subscriber.SubscribeAsync<MatchLiveMessage>($"match_{requestMatchId}", async sub =>

@@ -1,7 +1,9 @@
 using System.Net.Http.Headers;
 
 namespace Shared.RestApiClient;
-
+/// <summary>
+/// Rest api client extension
+/// </summary>
 public interface IApiClient
 {
     Task<string?> GetAsync(string absoluteUriPath, string jsonData);

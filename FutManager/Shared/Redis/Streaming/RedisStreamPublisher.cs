@@ -3,7 +3,9 @@ using Shared.Streaming;
 using StackExchange.Redis;
 
 namespace Shared.Redis.Streaming;
-
+/// <summary>
+/// Default redis stream publisher 
+/// </summary>
 internal sealed class RedisStreamPublisher : IStreamPublisher
 {
     private readonly ISubscriber _subscriber;

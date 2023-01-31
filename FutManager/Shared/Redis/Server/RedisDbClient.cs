@@ -5,6 +5,9 @@ using StackExchange.Redis;
 
 namespace Shared.Redis.Server
 {
+    /// <summary>
+    /// Containing some of the definitions for communicating and executing redis-cli commands
+    /// </summary>
     public interface IRedisServerClient
     {
         Task<List<CurrentlyLiveMatch>> GetActiveMatches();

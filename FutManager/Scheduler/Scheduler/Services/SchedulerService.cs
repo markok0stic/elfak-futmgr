@@ -33,6 +33,10 @@ public class SchedulerService: ISchedulerService
         _graphMatchDbService = graphMatchDbService;
     }
     
+    /// <summary>
+    /// Method used to create some of the nodes for Match and its relationships 
+    /// </summary>
+    /// <param name="match">Match to be started</param>
     public async Task ScheduleMatch(Match match)
     {
         match.MatchTime = DateTime.Now;
@@ -44,6 +48,12 @@ public class SchedulerService: ISchedulerService
         await StartMatch(match);
     }
 
+    /// <summary>
+    /// Method used to execute match player service and aggregator service to start generating and observing data
+    /// for match
+    /// </summary>
+    /// <param name="match">Match to be started</param>
+    /// <returns></returns>
     private async Task<bool> StartMatch(Match match)
     {
         var result = true;

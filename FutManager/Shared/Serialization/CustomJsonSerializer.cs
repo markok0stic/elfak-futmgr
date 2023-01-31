@@ -4,6 +4,10 @@ using Shared.Serialization.Options;
 
 namespace Shared.Serialization;
 
+/// <summary>
+/// We needed custom JSON serializer in order to implement repository pattern for Neo4jDbService
+/// We use JSON serialization but we are modifying some of the string literals with regex
+/// </summary>
 public class CustomJsonSerializer : ISerializer
 {
     private readonly CustomJsonSerializerOptions _options;

@@ -27,7 +27,11 @@ namespace MatchPlayer.Matchmaking.Services
             _logger = logger;
             _matchTasks = new ConcurrentDictionary<int, Task>();
         }
-
+        
+        /// <summary>
+        /// Same as in Aggregator microservice
+        /// </summary>
+        /// <param name="stoppingToken"></param>
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             _logger.LogInformation("Matchmaking background service has started.\n Waiting for scheduler to start match.");
@@ -53,6 +57,10 @@ namespace MatchPlayer.Matchmaking.Services
             _matchTasks.TryAdd(match.Id, matchTask);
         }
 
+        /// <summary>
+        /// Method responsible for listening to IAsyncEnumerable source and publishing data to specified channels
+        /// </summary>
+        /// <param name="match"></param>
         private async Task StartMatchAsync(Match match)
         {
             await foreach (var scores in _liveMessageGenerator.StartAsync(match))
@@ -63,6 +71,10 @@ namespace MatchPlayer.Matchmaking.Services
             _matchTasks.TryRemove(match.Id, out _);
         }
 
+        /// <summary>
+        /// Method responsible for stopping match immediately 
+        /// </summary>
+        /// <param name="matchId"></param>
         private async Task StopMatchmakingAsync(int matchId)
         {
             if (_matchTasks.TryGetValue(matchId, out _))

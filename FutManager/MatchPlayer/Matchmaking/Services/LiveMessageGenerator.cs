@@ -24,6 +24,11 @@ namespace MatchPlayer.Matchmaking.Services
             _messageDelay = configuration.GetValue<int>("Match:MessageDelay");
         }
 
+        /// <summary>
+        /// Method used to generate all highlights for football matches
+        /// </summary>
+        /// <param name="match"></param>
+        /// <returns></returns>
         public async IAsyncEnumerable<MatchLiveMessage> StartAsync(Match match)
         {
             _matchRunningStatus[match.Id] = true;

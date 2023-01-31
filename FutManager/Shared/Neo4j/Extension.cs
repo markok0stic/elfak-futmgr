@@ -4,6 +4,9 @@ using Neo4jClient;
 
 namespace Shared.Neo4j
 {
+    /// <summary>
+    /// Every extension method is used to inject exact dependencies for it
+    /// </summary>
     public static class Extension
     {
         public static IServiceCollection AddNeo4J(this IServiceCollection services, IConfiguration configuration)
