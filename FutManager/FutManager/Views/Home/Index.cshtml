@@ -23,8 +23,8 @@
                         foreach (var squad in Model.Squads)
                         {
                             <div class="borderLine">
-                                <p>@squad.Name</p>
-                                <p>@squad.Balance</p>
+                                <p>Name: @squad.Name</p>
+                                <p>Balance: @squad.Balance</p>
                                 <input id="deleteID" type="hidden" value="@squad.Id"/>
                                 <button id="changeSquad">Change</button>
                                 <button id="deleteSquad">Delete</button>
@@ -63,9 +63,9 @@
                         foreach (var player in Model.Players)
                         {
                             <div class="borderLine">
-                                <p>@player.FirstName</p>
-                                <p>@player.OverallRating</p>
-                                <p>@player.Nationality</p>
+                                <p>Name: @player.FirstName</p>
+                                <p>Rating: @player.OverallRating</p>
+                                <p>Nationality: @player.Nationality</p>
                                 <input id="deleteID" type="hidden" value="@player.Id"/>
                                 <button id="changePlayer">Change</button>
                                 <button id="deletePlayer">Delete</button>
@@ -150,9 +150,9 @@
                             foreach (var player in Model.Players)
                             {
                                 <div class="borderLine">
-                                    <p>@player.FirstName</p>
-                                    <p>@player.OverallRating</p>
-                                    <p>@player.Nationality</p>
+                                    <p>Name: @player.FirstName</p>
+                                    <p>Rating: @player.OverallRating</p>
+                                    <p>Nationality: @player.Nationality</p>
                                     <input id="addID" type="hidden" value="@player.Id" />
                                     <button id="addPlayer">Add</button>
                                 </div>

@@ -12,7 +12,6 @@ public interface IGraphDbService<T, in TQ> where T: class where TQ: class?
     Task UpdateNode(T node);
     Task<T?> GetNode(int id);
     Task<IEnumerable<T>> GetNodes(int page);
-    Task<int> GetNextId(string model);
     Task DeleteNode(int id);
 }
 
@@ -74,12 +73,11 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
     {
         if(destinationNode == null)
             return;
-        var qury = _graphClient.Cypher
+        await _graphClient.Cypher
             .Match($"(x:{typeof(T).Name}), (y:{typeof(TQ).Name})")
             .Where($"x.Id = {((dynamic)startingNode).Id} AND y.Id = {((dynamic)destinationNode).Id}")
-            .Create($"(x)-[:{type.ToString()}]->(y)");
-
-        await qury.ExecuteWithoutResultsAsync();
+            .Create($"(x)-[:{type.ToString()}]->(y)")
+            .ExecuteWithoutResultsAsync();
     }
     
     public async Task<int> GetNextId(T model)

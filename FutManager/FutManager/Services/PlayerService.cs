@@ -15,10 +15,10 @@ public interface IPlayerService
 }
 public class PlayerService : IPlayerService
 {
-    private readonly IGraphDbService<Player,object?> _graphPlayerDbClient;
+    private readonly IGraphDbService<Player, Squad> _graphPlayerDbClient;
     private readonly ILogger<PlayerService> _logger;
 
-    public PlayerService(IGraphDbService<Player, object?> graphPlayerDbClient, ILogger<PlayerService> logger)
+    public PlayerService(IGraphDbService<Player, Squad> graphPlayerDbClient, ILogger<PlayerService> logger)
     {
         _graphPlayerDbClient = graphPlayerDbClient;
         _logger = logger;
