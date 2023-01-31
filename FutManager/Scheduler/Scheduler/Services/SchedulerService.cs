@@ -34,7 +34,6 @@ public class SchedulerService: ISchedulerService
     
     public async Task ScheduleMatch(Match match)
     {
-        match.Id = await _graphMatchDbService.GetNextId(nameof(Match));
         await _graphMatchDbService.AddNode(match);
         await StartMatch(match);
     }
