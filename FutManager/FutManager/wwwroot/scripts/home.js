@@ -433,11 +433,11 @@ cancelBtnSquads.addEventListener("click", () => {
 async function startPractice() {
     const payload = JSON.stringify({
     "id": 1,
-    "homeSquad":{
+    "homeSquadDto":{
         "id":1,
         "name":"Brazil"
     },
-    "awaySquad":{
+    "awaySquadDto":{
         "id":2,
         "name":"Aregentina"  
     },
@@ -467,11 +467,11 @@ async function scheduleFriendly() {
     const offset = 1;
     const payload = JSON.stringify({
         "id": 2,
-        "homeSquad":{
+        "homeSquadDto":{
             "id":1,
             "name":"Squad1"
         },
-        "awaySquad":{
+        "awaySquadDto":{
             "id":2,
             "name":"Squad2"
         },

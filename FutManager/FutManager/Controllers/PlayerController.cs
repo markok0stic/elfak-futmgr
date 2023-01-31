@@ -1,6 +1,6 @@
 using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models.FootballPlayer;
+using Shared.Models.DtoModels;
 
 namespace FutManager.Controllers
 {
@@ -17,9 +17,9 @@ namespace FutManager.Controllers
         
         [Route("AddPlayer")]        
         [HttpPost]
-        public async Task<IActionResult> AddPlayer([FromBody]Player player)
+        public async Task<IActionResult> AddPlayer([FromBody]PlayerDto playerDto)
         {
-            int response = await _playerService.AddPlayer(player);
+            int response = await _playerService.AddPlayer(playerDto);
             return StatusCode(response);
         }
         
@@ -49,17 +49,17 @@ namespace FutManager.Controllers
 
         [Route("UpdatePlayer")]
         [HttpPut]
-        public async Task<IActionResult> UpdatePlayer([FromBody] Player player)
+        public async Task<IActionResult> UpdatePlayer([FromBody] PlayerDto playerDto)
         {
-            int response = await _playerService.UpdatePlayer(player);
+            int response = await _playerService.UpdatePlayer(playerDto);
             return StatusCode(response);
         }
 
-        [Route("AddPlayerToSquad/{SquadId}/{PlayerId}")]
+        [Route("AddPlayerToSquad/{squadId}/{playerId}")]
         [HttpPost]
-        public async Task<IActionResult> AddPlayerToSquad(int SquadId, int PlayerId)
+        public async Task<IActionResult> AddPlayerToSquad(int squadId, int playerId)
         {
-            int response = await _playerService.AddPlayerToSquad(SquadId, PlayerId);
+            int response = await _playerService.AddPlayerToSquad(squadId, playerId);
             return StatusCode(response);
         }
     }

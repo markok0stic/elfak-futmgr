@@ -3,9 +3,7 @@ using Newtonsoft.Json;
 using Scheduler.Models;
 using Shared.Models;
 using Shared.Models.DtoModels;
-using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
-using Shared.Models.SquadModels;
 using Shared.Neo4j.DbService;
 using Shared.Neo4j.Enums;
 using Shared.RestApiClient;
@@ -22,11 +20,11 @@ public class SchedulerService: ISchedulerService
     private readonly IApiClient _apiClient;
     private readonly string _matchPlayerBaseUrl;
     private readonly string _aggregatorBaseUrl;
-    private readonly IGraphDbService<MatchDto,Squad> _graphMatchDbService;
+    private readonly IGraphDbService<MatchDto,SquadDto> _graphMatchDbService;
     private readonly ILogger<SchedulerService> _logger;
 
     public SchedulerService(IApiClient apiClient, IOptions<SchedulerOptions> options, 
-        IGraphDbService<MatchDto, Squad> graphMatchDbService, ILogger<SchedulerService> logger)
+        IGraphDbService<MatchDto, SquadDto> graphMatchDbService, ILogger<SchedulerService> logger)
     {
         _apiClient = apiClient;
         _matchPlayerBaseUrl = options.Value.MatchPlayerBaseUrl;
@@ -40,8 +38,8 @@ public class SchedulerService: ISchedulerService
         match.MatchTime = DateTime.Now;
         var matchDto = new MatchDto(match);
         await _graphMatchDbService.AddNode(matchDto);
-        await _graphMatchDbService.MakeRelationship(matchDto, match.HomeSquad, RelationshipTypes.HOME);
-        await _graphMatchDbService.MakeRelationship(matchDto, match.AwaySquad, RelationshipTypes.AWAY);
+        await _graphMatchDbService.AddRelationship(matchDto.Id, match.HomeSquadDto.Id, RelationshipTypes.HOME);
+        await _graphMatchDbService.AddRelationship(matchDto.Id, match.AwaySquadDto.Id, RelationshipTypes.AWAY);
         match.Id = matchDto.Id;
         await StartMatch(match);
     }

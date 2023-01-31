@@ -1,22 +1,22 @@
-using Shared.Models.SquadModels;
+using Shared.Models.DtoModels;
 using Shared.Neo4j.DbService;
 
 namespace FutManager.Services;
 
 public interface ISquadService
 {
-    Task<IEnumerable<Squad>?> GetSquadsForPage(int page);
+    Task<IEnumerable<SquadDto>?> GetSquadsForPage(int page);
     Task<int> AddSquad(string name, int balance);
     Task<int> DeleteSquad(int id);
-    Task<int> UpdateSquad(Squad squad);
+    Task<int> UpdateSquad(SquadDto squadDto);
 }
 
 public class SquadService : ISquadService
 {
-    private readonly IGraphDbService<Squad,object?> _graphSquadDbClient;
+    private readonly IGraphDbService<SquadDto,object?> _graphSquadDbClient;
     private readonly ILogger<SquadService> _logger;
 
-    public SquadService(IGraphDbService<Squad, object?> graphSquadDbClient, ILogger<SquadService> logger)
+    public SquadService(IGraphDbService<SquadDto, object?> graphSquadDbClient, ILogger<SquadService> logger)
     {
         _graphSquadDbClient = graphSquadDbClient;
         _logger = logger;
@@ -26,7 +26,7 @@ public class SquadService : ISquadService
     {
         try
         {
-            var squad = new Squad() 
+            var squad = new SquadDto() 
             {
                 Balance = balance,
                 Name = name 
@@ -53,9 +53,9 @@ public class SquadService : ISquadService
         return StatusCodes.Status200OK;
     }
 
-    public async Task<IEnumerable<Squad>?> GetSquadsForPage(int page)
+    public async Task<IEnumerable<SquadDto>?> GetSquadsForPage(int page)
     {
-        IEnumerable<Squad>? squads = null;
+        IEnumerable<SquadDto>? squads = null;
         try
         {
             squads = await _graphSquadDbClient.GetNodes(page);
@@ -67,11 +67,11 @@ public class SquadService : ISquadService
         return squads;
     }
 
-    public async Task<int> UpdateSquad(Squad squad)
+    public async Task<int> UpdateSquad(SquadDto squadDto)
     {
         try
         {
-            await _graphSquadDbClient.UpdateNode(squad);
+            await _graphSquadDbClient.UpdateNode(squadDto);
         }
         catch (Exception e)
         {

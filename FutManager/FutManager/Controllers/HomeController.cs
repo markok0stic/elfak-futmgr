@@ -1,7 +1,6 @@
 using FutManager.Models.ViewModels;
 using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 
 namespace FutManager.Controllers

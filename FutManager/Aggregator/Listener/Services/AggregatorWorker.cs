@@ -1,7 +1,6 @@
 using Aggregator.Listener.Requests;
 using Newtonsoft.Json;
 using Shared.Models.DtoModels;
-using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 using Shared.Neo4j.DbService;
 using Shared.Neo4j.Enums;
@@ -13,11 +12,11 @@ namespace Aggregator.Listener.Services
     {
         private readonly IStreamSubscriber _subscriber;
         private readonly AggregatorRequestChannel _aggregatorRequest;
-        private readonly IGraphDbService<Player,MatchDto> _graphPlayerDbService;
+        private readonly IGraphDbService<PlayerDto,MatchDto> _graphPlayerDbService;
         private readonly IGraphDbService<MatchDto,object?> _graphMatchDbService;
         private readonly ILogger<AggregatorWorker> _logger;
 
-        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<Player, MatchDto> graphPlayerDbService, ILogger<AggregatorWorker> logger, IGraphDbService<MatchDto, object?> graphMatchDbService)
+        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<PlayerDto, MatchDto> graphPlayerDbService, ILogger<AggregatorWorker> logger, IGraphDbService<MatchDto, object?> graphMatchDbService)
         {
             _subscriber = subscriber;
             _aggregatorRequest = aggregatorRequest;
@@ -56,7 +55,7 @@ namespace Aggregator.Listener.Services
                 if (sub.Score != null)
                 {
                     // persist score
-                    await _graphPlayerDbService.MakeRelationship(sub.Score,new MatchDto() {Id = sub.Id}, RelationshipTypes.SCORED_GOAL);
+                    await _graphPlayerDbService.AddRelationship(sub.Score.Id,sub.Id, RelationshipTypes.SCORED_GOAL);
                 }
                 
                 // we can implement here persists of cards etc...

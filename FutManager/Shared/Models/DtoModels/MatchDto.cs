@@ -1,3 +1,5 @@
+using Shared.Models.MatchModels;
+
 namespace Shared.Models.DtoModels
 {
     public class MatchDto
