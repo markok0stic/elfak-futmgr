@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using Newtonsoft.Json;
 using Shared.Models;
+using Shared.Models.DtoModels;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 
@@ -37,7 +38,9 @@ namespace MatchPlayer.Matchmaking.Services
                     Result = null,
                     Score = null,
                     MatchTime = match.MatchTime,
-                    Minute = i
+                    Minute = i,
+                    HomeSquad = match.HomeSquad,
+                    AwaySquad = match.AwaySquad
                 };
                 
                 

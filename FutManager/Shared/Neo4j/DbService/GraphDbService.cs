@@ -78,7 +78,6 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
             .Create($"(x)-[:{type.ToString()}]->(y)")
             .ExecuteWithoutResultsAsync();
     }
-    
     public async Task<int> GetNextId(T model)
     {
         var maxId = 0;

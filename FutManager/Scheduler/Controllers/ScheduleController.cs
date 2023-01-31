@@ -1,6 +1,8 @@
 using System.Globalization;
 using Microsoft.AspNetCore.Mvc;
 using Scheduler.Scheduler.Services;
+using Shared.Models;
+using Shared.Models.DtoModels;
 using Shared.Models.MatchModels;
 
 namespace Scheduler.Controllers;
@@ -16,12 +18,12 @@ public class ScheduleController: Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> StartPractice([FromBody]Match match)
+    public async Task<IActionResult> StartPractice([FromBody]Match matchDto)
     {
         IActionResult response;
         try
         {
-            await _schedulerService.ScheduleMatch(match);
+            await _schedulerService.ScheduleMatch(matchDto);
             response = Ok("Match successfully started.");
         }
         catch (Exception e)
@@ -33,12 +35,12 @@ public class ScheduleController: Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> ScheduleMatch([FromBody]Match match)
+    public async Task<IActionResult> ScheduleMatch([FromBody]Match matchDto)
     {
         IActionResult response;
         try
         {
-            var delay = match.MatchTime - DateTime.Now;
+            var delay = matchDto.MatchTime - DateTime.Now;
             if (delay.Milliseconds < 0)
             {
                 return BadRequest("Couldn't schedule match...");
@@ -46,10 +48,10 @@ public class ScheduleController: Controller
             Task.Run(async () =>
             {
                 await Task.Delay(delay);
-                await _schedulerService.ScheduleMatch(match);
+                await _schedulerService.ScheduleMatch(matchDto);
             });
             await Task.CompletedTask;
-            _logger.LogInformation($"Match {match.Id}: A vs B is scheduled for {match.MatchTime.ToString(CultureInfo.InvariantCulture)}!");
+            _logger.LogInformation($"Match {matchDto.Id}: A vs B is scheduled for {matchDto.MatchTime.ToString(CultureInfo.InvariantCulture)}!");
             response = Ok("Match successfully scheduled.");
         }
         catch (Exception e)

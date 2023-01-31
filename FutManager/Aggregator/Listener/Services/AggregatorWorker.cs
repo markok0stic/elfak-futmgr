@@ -1,5 +1,6 @@
 using Aggregator.Listener.Requests;
 using Newtonsoft.Json;
+using Shared.Models.DtoModels;
 using Shared.Models.FootballPlayer;
 using Shared.Models.MatchModels;
 using Shared.Neo4j.DbService;
@@ -11,10 +12,10 @@ namespace Aggregator.Listener.Services
     {
         private readonly IStreamSubscriber _subscriber;
         private readonly AggregatorRequestChannel _aggregatorRequest;
-        private readonly IGraphDbService<Match,Player> _graphDbService;
+        private readonly IGraphDbService<MatchDto,Player> _graphDbService;
         private readonly ILogger<AggregatorWorker> _logger;
 
-        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<Match, Player> graphDbService, ILogger<AggregatorWorker> logger)
+        public AggregatorWorker(IStreamSubscriber subscriber, AggregatorRequestChannel aggregatorRequest, IGraphDbService<MatchDto, Player> graphDbService, ILogger<AggregatorWorker> logger)
         {
             _subscriber = subscriber;
             _aggregatorRequest = aggregatorRequest;
