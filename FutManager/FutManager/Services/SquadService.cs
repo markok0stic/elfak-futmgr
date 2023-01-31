@@ -1,5 +1,4 @@
-using Shared.Models.FootballPlayer;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 using Shared.Neo4j.DbService;
 
 namespace FutManager.Services;

@@ -1,7 +1,6 @@
 ﻿using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
-using Shared.Models.FootballPlayer;
-using Shared.Models.Squaq;
+using Shared.Models.SquadModels;
 
 namespace FutManager.Controllers
 {
