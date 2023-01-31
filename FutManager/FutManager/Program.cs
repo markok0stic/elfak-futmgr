@@ -26,7 +26,7 @@ builder.Services.AddCors(options =>
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
-    .AddNeo4JDbService<Player,object?>()
+    .AddNeo4JDbService<Player,Squad>()
     .AddNeo4JDbService<Squad,object?>()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()

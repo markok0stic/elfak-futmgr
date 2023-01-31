@@ -1,8 +1,12 @@
 ﻿using FutManager.Services;
 using Microsoft.AspNetCore.Mvc;
+using Shared.Models.FootballPlayer;
+using Shared.Models.Squaq;
 
 namespace FutManager.Controllers
 {
+    [ApiController]
+    [Route("SquadManager")]
     public class SquadController : Controller
     {
         private readonly ISquadService _squadService;
@@ -32,6 +36,14 @@ namespace FutManager.Controllers
         public async Task<IActionResult> DeleteSquad(int id)
         {
             int response = await _squadService.DeleteSquad(id);
+            return StatusCode(response);
+        }
+
+        [Route("UpdateSquad")]
+        [HttpPut]
+        public async Task<IActionResult> UpdateSquad([FromBody]Squad squad)
+        {
+            int response = await _squadService.UpdateSquad(squad);
             return StatusCode(response);
         }
     }
