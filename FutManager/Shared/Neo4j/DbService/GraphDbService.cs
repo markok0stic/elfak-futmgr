@@ -56,11 +56,9 @@ public class GraphDbService<T,TQ>: IGraphDbService<T,TQ> where T : class where T
     {
         if(destinationNode == null)
             return;
-        var dynIdStart = (dynamic)startingNode;
-        var dynIdDest = (dynamic)destinationNode;
         await _graphClient.Cypher
             .Match($"(x:{typeof(T).Name}), (y:{typeof(TQ).Name})")
-            .Where($"x.Id = {dynIdStart.Id} AND y.Id = {dynIdDest.Id}")
+            .Where($"x.Id = {((dynamic)startingNode).Id} AND y.Id = {((dynamic)destinationNode).Id}")
             .Create($"(x)-[:{type.ToString()}]->(y)")
             .ExecuteWithoutResultsAsync();
     }

@@ -26,13 +26,15 @@ builder.Services.AddCors(options =>
 builder.Services
     .AddHttpContextAccessor()
     .AddNeo4J(builder.Configuration)
-    .AddNeo4JDbService<Player,Squad?>()
-    .AddNeo4JDbService<Squad,Player?>()
+    .AddNeo4JDbService<Player,object?>()
+    .AddNeo4JDbService<Squad,object?>()
     .AddRedis(builder.Configuration)
     .AddRedisStreaming()
     .AddRedisServer()
     .AddSingleton<RedisHub>()
     .AddTransient<IHomeService,HomeService>()
+    .AddTransient<IPlayerService,PlayerService>()
+    .AddTransient<ISquadService,SquadService>()
     .AddSignalR();
 
 var app = builder.Build();

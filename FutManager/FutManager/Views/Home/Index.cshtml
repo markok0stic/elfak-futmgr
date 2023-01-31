@@ -17,15 +17,19 @@
         <div class="manageSquad displayNone">
             <button>&lt</button>
             <div class="showList">
-                @foreach (var squad in Model.Squads)
-                {
-                        <div class="borderLine">
-                            <p>@squad.Name</p>
-                            <p>@squad.Balance</p>
-                            <input id="deleteID" type="hidden" value="@squad.ID" />
-                            <button>Change</button>
-                            <button id="deleteSquad">Delete</button>
-                        </div>
+                @{
+                    if (Model.Squads != null)
+                    {
+                        foreach (var squad in Model.Squads)
+                        {
+                            <div class="borderLine">
+                                <p>@squad.Name</p>
+                                <p>@squad.Balance</p>
+                                <input id="deleteID" type="hidden" value="@squad.Id"/>
+                                <button>Change</button>
+                                <button id="deleteSquad">Delete</button>
+                            </div>
+                        }
                     }
                 }
             </div>
@@ -53,18 +57,21 @@
         <div class="managePlayer displayNone">
             <button id="previousPlayers">&lt</button>
             <div id="shlPlayers" class="showList">
-            @{
-                foreach (var player in Model.Players)
-                {
-                    <div class="borderLine">
-                        <p>@player.FirstName</p>
-                        <p>@player.OverallRating</p>
-                        <p>@player.Nationality</p>
-                        <input id="deleteID" type="hidden" value="@player.ID" />
-                        <button id="changePlayer">Change</button>
-                        <button id="deletePlayer">Delete</button>
-                    </div>
-                }
+                @{
+                    if (Model.Players != null)
+                    {
+                        foreach (var player in Model.Players)
+                        {
+                            <div class="borderLine">
+                                <p>@player.FirstName</p>
+                                <p>@player.OverallRating</p>
+                                <p>@player.Nationality</p>
+                                <input id="deleteID" type="hidden" value="@player.Id"/>
+                                <button id="changePlayer">Change</button>
+                                <button id="deletePlayer">Delete</button>
+                            </div>
+                        }
+                    }
                 }
             </div>
             <button id="nextPlayers">&gt</button>
@@ -90,9 +97,12 @@
     <div class="matches borderLine">
         <h1>Currently Live Matches</h1>
         @{
-            foreach (var liveMatch in Model.LiveMatches)
+            if (Model.LiveMatches != null)
             {
-                <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })">@liveMatch.Channel</a>
+                foreach (var liveMatch in Model.LiveMatches)
+                {
+                    <a href="@Url.Action("Index", "LiveMatch", new { channel = liveMatch.Channel })">@liveMatch.Channel</a>
+                }
             }
         }
     </div>
